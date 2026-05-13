@@ -105,8 +105,11 @@ Durante o desenvolvimento do projeto, diferentes variações de Transformers apl
 - Redução da dependência de dados rotulados  
 
 ---
+## 7. Documentação dos Datasets
 
-## 7. Estado Atual do Projeto
+---
+
+## 8. Estado Atual do Projeto
 
 Até o momento, o projeto encontra-se nas seguintes etapas:
 
@@ -126,7 +129,7 @@ Como próximos passos, destacam-se:
 
 ---
 
-## 8. Contribuições Esperadas
+## 9. Contribuições Esperadas
 
 Espera-se que o projeto resulte em:
 
