@@ -129,7 +129,11 @@ Como próximos passos, destacam-se:
 
 ---
 
-## 9. Contribuições Esperadas
+## 9. Resultados Preliminares
+
+---
+
+## 10. Contribuições Esperadas
 
 Espera-se que o projeto resulte em:
 
