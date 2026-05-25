@@ -107,6 +107,24 @@ Durante o desenvolvimento do projeto, diferentes variações de Transformers apl
 ---
 ## 7. Documentação dos Datasets
 
+Os datasets utilizados neste trabalho são documentados seguindo o framework [Datasheets for Datasets](https://arxiv.org/abs/1803.09010), proposto por Gebru et al., com adaptações para o domínio de áudio musical e efeitos de guitarra.
+
+Os datasheets completos estão disponíveis na issue dedicada: [Datasheets for Datasets](https://github.com/caduobristo/tcc/issues/2)
+
+### Datasets analisados
+
+* **IDMT-SMT-GUITAR:**
+  Dataset de guitarra limpa com múltiplas técnicas performáticas e estruturas musicais, utilizado como base para geração sintética de novos dados.
+
+* **IDMT-SMT-AUDIO-EFFECTS:**
+  Dataset organizado por categorias de efeitos de áudio, contendo gravações processadas e metadados estruturados via XML.
+
+* **GEC-GIM:**
+  Dataset para classificação de efeitos de guitarra em sinais mistos contendo múltiplos instrumentos.
+
+* **GEPE-GIM:**
+  Dataset voltado à estimação contínua de parâmetros de efeitos de guitarra em mixagens instrumentais.
+
 ---
 
 ## 8. Estado Atual do Projeto
@@ -130,6 +148,12 @@ Como próximos passos, destacam-se:
 ---
 
 ## 9. Resultados Preliminares
+
+Como etapa inicial de validação experimental, foram realizados testes preliminares com arquiteturas baseadas em Transformers para áudio, com foco nos modelos PaSST (Patchout Spectrogram Transformer) e AudioMAE (Masked Autoencoders for Audio).
+
+Os experimentos conduzidos até o momento, incluindo configurações utilizadas, etapas de reprodução e resultados obtidos, foram documentados em uma issue separada do repositório: https://github.com/caduobristo/tcc/issues/1
+
+Esses testes têm como objetivo avaliar a viabilidade das arquiteturas investigadas para tarefas de classificação de efeitos de guitarra e servir como base para os próximos experimentos de fine-tuning e adaptação ao domínio do projeto.
 
 ---
 
