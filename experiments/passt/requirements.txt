@@ -1,0 +1,9 @@
+numpy==1.23.5
+scikit-learn==1.2.2
+matplotlib==3.7.1
+soundfile==0.12.1
+torch==1.11.0
+torchaudio==0.11.0
+torchvision==0.12.0
+timm==0.4.12
+hear21passt
