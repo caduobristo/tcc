@@ -1,4 +1,6 @@
-# ICSXG0-S71 TCC | Semestre 1 de 2026
+# Transformers de áudio para classificação de efeitos de guitarra
+
+ICSXG0-S71 TCC | Semestre 1 de 2026
 
 Trabalho de Conclusão de Curso (TCC) em andamento para o curso de graduação em Engenharia da Computação na Universidade Tecnologia Federal do Paraná - UTFPR - Campus Curitiba.
 
@@ -149,7 +151,7 @@ Como próximos passos, destacam-se:
 
 ## 9. Resultados Preliminares
 
-Como etapa inicial de validação experimental, foram realizados testes preliminares com arquiteturas baseadas em Transformers para áudio, com foco nos modelos PaSST (Patchout Spectrogram Transformer) e AudioMAE (Masked Autoencoders for Audio).
+Foram realizados testes preliminares com arquiteturas baseadas em Transformers para áudio, com foco nos modelos PaSST (Patchout Spectrogram Transformer) e AudioMAE (Masked Autoencoders for Audio).
 
 Os experimentos conduzidos até o momento, incluindo configurações utilizadas, etapas de reprodução e resultados obtidos, foram documentados em uma issue separada do repositório: https://github.com/caduobristo/tcc/issues/1
 
