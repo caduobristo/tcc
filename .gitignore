@@ -208,3 +208,8 @@ __marimo__/
 
 # Datasets
 dataset/
+
+# Baseline outputs
+*.pt
+checkpoints/
+results/
