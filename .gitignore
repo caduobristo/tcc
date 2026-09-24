@@ -212,4 +212,3 @@ dataset/
 # Baseline outputs
 *.pt
 checkpoints/
-results/
