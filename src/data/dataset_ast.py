@@ -16,7 +16,6 @@ class FxDatasetAST(Dataset):
         self,
         root: str,
         excl_folders: list = None,
-        spectra_folder: str = "mel_16",
         processed_settings_csv: str = "proc_settings.csv",
         max_num_settings: int = 3,
         cache_in_ram: bool = False,
@@ -27,7 +26,6 @@ class FxDatasetAST(Dataset):
     ):
         self.root = os.path.abspath(root)
         self.excl_folders = excl_folders or []
-        self.spectra_folder = spectra_folder
         self.processed_settings_csv = processed_settings_csv
         self.max_num_settings = max_num_settings
         self.cache_in_ram = cache_in_ram
@@ -46,19 +44,11 @@ class FxDatasetAST(Dataset):
         self.mel_shape = ()
         self.num_fx = 0
 
-    def _get_base_path(self):
-        features_path = os.path.join(self.root, "Features")
-        if os.path.exists(features_path) and os.path.isdir(features_path):
-            return features_path
-        return self.root
-
     def init_dataset(self):
-        base_path = self._get_base_path()
-
         # Map effect folders to integer class labels
         i = 0
-        for folder in sorted(os.listdir(base_path)):
-            folder_path = os.path.join(base_path, folder)
+        for folder in sorted(os.listdir(self.root)):
+            folder_path = os.path.join(self.root, folder)
             if os.path.isdir(folder_path) and folder not in self.excl_folders:
                 self.fx_to_label[folder] = i
                 self.label_to_fx[i] = folder
@@ -68,7 +58,7 @@ class FxDatasetAST(Dataset):
 
         # Read effect parameter settings CSVs
         for folder, label_idx in self.fx_to_label.items():
-            csv_path = os.path.join(base_path, folder, self.processed_settings_csv)
+            csv_path = os.path.join(self.root, folder, self.processed_settings_csv)
             if os.path.exists(csv_path):
                 with open(csv_path, mode="r", encoding="utf-8") as file:
                     reader = csv.reader(file)
@@ -85,12 +75,14 @@ class FxDatasetAST(Dataset):
 
         # Index available precomputed spectrogram files
         for folder, label_idx in self.fx_to_label.items():
-            spec_dir = os.path.join(base_path, folder, self.spectra_folder)
+            spec_dir = os.path.join(self.root, folder)
+            
             if os.path.exists(spec_dir):
                 for file in sorted(os.listdir(spec_dir)):
                     if not file.startswith("._") and file.endswith(".npy"):
                         filename = file[:-4]
-                        self.audiosamples_labels.append((filename, label_idx))
+                        exact_path = os.path.join(spec_dir, file)
+                        self.audiosamples_labels.append((filename, label_idx, exact_path))
                         settings = self.audiosample_to_settings.get(
                             filename, [-1.0] * self.max_num_settings
                         )
@@ -112,11 +104,9 @@ class FxDatasetAST(Dataset):
         if self.cache_in_ram and index in self.cache:
             return self.cache[index]
 
-        filename, label = self.audiosamples_labels[index]
+        filename, label, npy_path = self.audiosamples_labels[index]
         _, settings = self.audiosamples_settings[index]
         folder = self.label_to_fx[label]
-
-        npy_path = os.path.join(self.root, "Features", folder, self.spectra_folder, f"{filename}.npy")
         try:
             mel_array = np.load(npy_path)
             if self.transform:
