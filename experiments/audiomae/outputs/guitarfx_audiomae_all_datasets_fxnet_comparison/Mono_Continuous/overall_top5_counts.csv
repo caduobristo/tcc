@@ -1,0 +1,97 @@
+top5_name,count,fraction
+Music,120316,0.925508
+Synthesizer,89117,0.685515
+Musical instrument,70982,0.546015
+"Air horn, truck horn",52836,0.406431
+Sound effect,48261,0.371238
+Keyboard (musical),39994,0.307646
+Electronic tuner,27529,0.211762
+"Vehicle horn, car horn, honking",24375,0.187500
+Sampler,22980,0.176769
+Effects unit,20536,0.157969
+Guitar,15407,0.118515
+Distortion,14543,0.111869
+Noise,12476,0.095969
+Sine wave,11038,0.084908
+"Inside, small room",10678,0.082138
+Vehicle,9129,0.070223
+Electric piano,8311,0.063931
+Plucked string instrument,8133,0.062562
+Train,7311,0.056238
+Siren,5468,0.042062
+Piano,3437,0.026438
+Chirp tone,2998,0.023062
+Cacophony,2527,0.019438
+Rail transport,2032,0.015631
+Boing,2021,0.015546
+Alarm,1921,0.014777
+Foghorn,1375,0.010577
+Electric guitar,1157,0.008900
+Car alarm,1152,0.008862
+"Wind instrument, woodwind instrument",869,0.006685
+Fire alarm,779,0.005992
+Ping,714,0.005492
+Brass instrument,704,0.005415
+Buzzer,704,0.005415
+Bicycle bell,693,0.005331
+Echo,681,0.005238
+Busy signal,592,0.004554
+"Railroad car, train wagon",472,0.003631
+Civil defense siren,420,0.003231
+Sidetone,414,0.003185
+Chorus effect,397,0.003054
+Theremin,382,0.002938
+Tapping (guitar technique),367,0.002823
+Plop,347,0.002669
+Train horn,318,0.002446
+Timpani,306,0.002354
+"Beep, bleep",295,0.002269
+Ambulance (siren),252,0.001938
+Trombone,212,0.001631
+French horn,186,0.001431
+"Outside, urban or manmade",178,0.001369
+Didgeridoo,133,0.001023
+Shofar,133,0.001023
+Trumpet,127,0.000977
+Ding,123,0.000946
+Clang,121,0.000931
+"Electric shaver, electric razor",104,0.000800
+Bell,103,0.000792
+Ding-dong,64,0.000492
+Toot,62,0.000477
+Heavy metal,61,0.000469
+Doorbell,60,0.000462
+"Outside, rural or natural",60,0.000462
+Bass guitar,58,0.000446
+Sitar,48,0.000369
+Harmonic,46,0.000354
+Dial tone,42,0.000323
+Bagpipes,41,0.000315
+Mains hum,40,0.000308
+"Inside, large room or hall",35,0.000269
+"Smoke detector, smoke alarm",27,0.000208
+Banjo,20,0.000154
+Church bell,17,0.000131
+Speech,16,0.000123
+Ship,13,0.000100
+Car,13,0.000100
+Pizzicato,13,0.000100
+Static,13,0.000100
+Electric toothbrush,11,0.000085
+Hum,10,0.000077
+Breaking,9,0.000069
+Reverberation,9,0.000069
+Zither,7,0.000054
+Angry music,6,0.000046
+Emergency vehicle,6,0.000046
+Drum machine,4,0.000031
+Harmonica,4,0.000031
+Silence,4,0.000031
+"Gunshot, gunfire",3,0.000023
+Ukulele,3,0.000023
+"Violin, fiddle",2,0.000015
+Mandolin,2,0.000015
+Electronic organ,2,0.000015
+Squeal,1,0.000008
+Power tool,1,0.000008
+Pulse,1,0.000008

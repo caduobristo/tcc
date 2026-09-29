@@ -1,0 +1,23 @@
+top5_name,count,fraction
+Music,26,1.000000
+Musical instrument,23,0.884615
+Guitar,11,0.423077
+Effects unit,10,0.384615
+Sound effect,9,0.346154
+Distortion,8,0.307692
+Keyboard (musical),7,0.269231
+Piano,6,0.230769
+Electric piano,5,0.192308
+Plucked string instrument,4,0.153846
+Cacophony,4,0.153846
+Timpani,3,0.115385
+Bass guitar,2,0.076923
+Synthesizer,2,0.076923
+Noise,2,0.076923
+Television,2,0.076923
+"Inside, small room",1,0.038462
+Electronic tuner,1,0.038462
+"Air horn, truck horn",1,0.038462
+Vehicle,1,0.038462
+Chorus effect,1,0.038462
+"Gunshot, gunfire",1,0.038462

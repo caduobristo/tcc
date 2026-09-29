@@ -1,0 +1,63 @@
+source_label,n,top1_name,count,fraction
+808,100,Music,75,0.750000
+808,100,"Air horn, truck horn",16,0.160000
+808,100,Synthesizer,9,0.090000
+BD2,100,Music,60,0.600000
+BD2,100,"Air horn, truck horn",20,0.200000
+BD2,100,Cacophony,11,0.110000
+BD2,100,Train,3,0.030000
+BD2,100,Synthesizer,2,0.020000
+BD2,100,Siren,2,0.020000
+BD2,100,Foghorn,1,0.010000
+BD2,100,Vehicle,1,0.010000
+BMF,100,Music,63,0.630000
+BMF,100,Synthesizer,19,0.190000
+BMF,100,"Air horn, truck horn",16,0.160000
+BMF,100,Noise,1,0.010000
+BMF,100,Sound effect,1,0.010000
+DPL,100,Music,56,0.560000
+DPL,100,"Air horn, truck horn",38,0.380000
+DPL,100,Synthesizer,3,0.030000
+DPL,100,Sound effect,2,0.020000
+DPL,100,Sine wave,1,0.010000
+DS1,100,Music,63,0.630000
+DS1,100,"Air horn, truck horn",24,0.240000
+DS1,100,Synthesizer,8,0.080000
+DS1,100,Noise,3,0.030000
+DS1,100,Alarm,1,0.010000
+DS1,100,Sine wave,1,0.010000
+FFC,100,Music,55,0.550000
+FFC,100,"Air horn, truck horn",41,0.410000
+FFC,100,Synthesizer,4,0.040000
+MGS,100,Music,81,0.810000
+MGS,100,"Air horn, truck horn",13,0.130000
+MGS,100,Synthesizer,3,0.030000
+MGS,100,Sine wave,2,0.020000
+MGS,100,Electronic tuner,1,0.010000
+OD1,100,Music,77,0.770000
+OD1,100,"Air horn, truck horn",16,0.160000
+OD1,100,Synthesizer,5,0.050000
+OD1,100,Noise,1,0.010000
+OD1,100,Siren,1,0.010000
+RAT,100,Music,70,0.700000
+RAT,100,"Air horn, truck horn",22,0.220000
+RAT,100,Synthesizer,5,0.050000
+RAT,100,Sine wave,3,0.030000
+RBM,100,Music,64,0.640000
+RBM,100,Synthesizer,20,0.200000
+RBM,100,"Air horn, truck horn",13,0.130000
+RBM,100,Noise,2,0.020000
+RBM,100,Busy signal,1,0.010000
+SD1,100,Music,69,0.690000
+SD1,100,"Air horn, truck horn",20,0.200000
+SD1,100,Synthesizer,8,0.080000
+SD1,100,Electronic tuner,2,0.020000
+SD1,100,Noise,1,0.010000
+TS9,100,Music,67,0.670000
+TS9,100,"Air horn, truck horn",19,0.190000
+TS9,100,Synthesizer,10,0.100000
+TS9,100,Sine wave,2,0.020000
+TS9,100,Sound effect,1,0.010000
+TS9,100,Ping,1,0.010000
+VTB,100,"Air horn, truck horn",54,0.540000
+VTB,100,Music,46,0.460000

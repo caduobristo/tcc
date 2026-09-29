@@ -1,0 +1,132 @@
+top5_name,count,fraction
+Music,128998,0.992292
+Musical instrument,111614,0.858569
+Guitar,68883,0.529869
+Distortion,62055,0.477346
+Effects unit,55100,0.423846
+Plucked string instrument,30124,0.231723
+Sound effect,27208,0.209292
+Keyboard (musical),22659,0.174300
+Cacophony,17815,0.137038
+Synthesizer,15644,0.120338
+Vehicle,14487,0.111438
+Piano,10896,0.083815
+Timpani,9328,0.071754
+Noise,8756,0.067354
+Electric piano,7705,0.059269
+Electronic tuner,5266,0.040508
+Car,5220,0.040154
+Bass guitar,4068,0.031292
+Television,3884,0.029877
+Artillery fire,2862,0.022015
+Electric guitar,2419,0.018608
+White noise,2155,0.016577
+Pink noise,2114,0.016262
+Speech,1928,0.014831
+Explosion,1823,0.014023
+Church bell,1807,0.013900
+Chorus effect,1791,0.013777
+Scary music,1665,0.012808
+"Gunshot, gunfire",1584,0.012185
+Car passing by,1497,0.011515
+Clang,1463,0.011254
+Motor vehicle (road),1339,0.010300
+Eruption,1070,0.008231
+"Vehicle horn, car horn, honking",1004,0.007723
+"Boat, Water vehicle",913,0.007023
+Bang,893,0.006869
+Foghorn,879,0.006762
+"Air horn, truck horn",851,0.006546
+"Inside, small room",782,0.006015
+Static,776,0.005969
+Train horn,646,0.004969
+"Motorboat, speedboat",547,0.004208
+Whir,531,0.004085
+Heavy metal,487,0.003746
+Sampler,474,0.003646
+Aircraft,445,0.003423
+Ding,418,0.003215
+Bell,406,0.003123
+Reverberation,306,0.002354
+Gong,266,0.002046
+Machine gun,248,0.001908
+Helicopter,220,0.001692
+Strum,200,0.001538
+Organ,198,0.001523
+"Burst, pop",186,0.001431
+Drum,184,0.001415
+Echo,181,0.001392
+Microwave oven,172,0.001323
+Trombone,157,0.001208
+Fusillade,153,0.001177
+Bus,149,0.001146
+Mechanisms,145,0.001115
+Buzzer,142,0.001092
+Electronic music,130,0.001000
+Engine,113,0.000869
+Rumble,109,0.000838
+Train,100,0.000769
+Steam whistle,84,0.000646
+Angry music,80,0.000615
+Siren,80,0.000615
+"Race car, auto racing",77,0.000592
+"Outside, rural or natural",71,0.000546
+Theme music,64,0.000492
+"Propeller, airscrew",63,0.000485
+Motorcycle,59,0.000454
+Ship,57,0.000438
+"Fixed-wing aircraft, airplane",54,0.000415
+Tubular bells,50,0.000385
+Crack,48,0.000369
+Boing,47,0.000362
+Brass instrument,39,0.000300
+Hammond organ,39,0.000300
+"Accelerating, revving, vroom",36,0.000277
+Rock music,34,0.000262
+Percussion,31,0.000238
+Waterfall,30,0.000231
+Sidetone,28,0.000215
+Sine wave,25,0.000192
+Hum,24,0.000185
+Vibration,23,0.000177
+Didgeridoo,21,0.000162
+Civil defense siren,19,0.000146
+Trumpet,16,0.000123
+Banjo,16,0.000123
+Buzz,13,0.000100
+Breaking,13,0.000100
+Alarm,12,0.000092
+Ambient music,10,0.000077
+Train whistle,9,0.000069
+Doorbell,8,0.000062
+Ocean,6,0.000046
+Chirp tone,5,0.000038
+Medium engine (mid frequency),5,0.000038
+Clatter,5,0.000038
+Tapping (guitar technique),4,0.000031
+Bowed string instrument,4,0.000031
+"Electric shaver, electric razor",4,0.000031
+Thunder,4,0.000031
+Ping,4,0.000031
+"Whoosh, swoosh, swish",4,0.000031
+Drill,3,0.000023
+Lawn mower,3,0.000023
+Hiss,3,0.000023
+Ringtone,3,0.000023
+Rain,2,0.000015
+Power tool,2,0.000015
+Mains hum,2,0.000015
+Tire squeal,2,0.000015
+Electronic organ,2,0.000015
+Truck,2,0.000015
+Dial tone,2,0.000015
+Arrow,2,0.000015
+Zither,1,0.000008
+Sitar,1,0.000008
+Music of Latin America,1,0.000008
+Fire alarm,1,0.000008
+Tools,1,0.000008
+Silence,1,0.000008
+Pizzicato,1,0.000008
+"Fire engine, fire truck (siren)",1,0.000008
+Rail transport,1,0.000008

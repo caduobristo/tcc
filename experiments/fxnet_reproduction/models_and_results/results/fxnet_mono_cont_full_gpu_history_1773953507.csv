@@ -1,0 +1,2 @@
+epoch,train_loss,val_loss,test_loss,train_acc,val_acc,test_acc,epoch_seconds
+0,647.269060,41.116647,102.917227,72.9081,81.0481,80.9846,545.7818

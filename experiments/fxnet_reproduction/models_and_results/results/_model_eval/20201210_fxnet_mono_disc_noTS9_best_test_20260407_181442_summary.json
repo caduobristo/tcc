@@ -1,0 +1,15 @@
+{
+  "model_name": "20201210_fxnet_mono_disc_noTS9_best",
+  "split": "test",
+  "dataset_root": "C:\\TCC\\Reproduzir_artigo\\data\\GUITAR-FX\\Mono_Discrete\\Features",
+  "exclude_folders": [
+    "TS9",
+    "MT2"
+  ],
+  "device": "cuda",
+  "samples": 22215,
+  "avg_loss": 0.0009350574057823415,
+  "total_correct": 21519,
+  "accuracy": 0.9686698176907494,
+  "predictions_csv": "C:\\TCC\\Reproduzir_artigo\\models_and_results\\results\\_model_eval\\20201210_fxnet_mono_disc_noTS9_best_test_20260407_181442_predictions.csv"
+}

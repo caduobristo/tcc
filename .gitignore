@@ -209,3 +209,30 @@ __marimo__/
 # Datasets
 dataset/
 
+
+# Reproducoes: ambientes e artefatos volumosos permanecem locais
+/experiments/**/.conda/
+/experiments/**/.cache/
+/experiments/**/local_archive/
+/experiments/**/data/
+/experiments/**/ckpt/
+/experiments/**/*.pth
+/experiments/**/*.pt
+/experiments/**/*.npy
+/experiments/**/*.npz
+/experiments/**/*.pdf
+/experiments/**/*.wav
+/experiments/**/*.flac
+/experiments/**/logs/
+/experiments/**/pyvenv.cfg
+/experiments/**/models_and_results/models/
+/experiments/**/executed_notebooks/
+/experiments/**/predictions*.csv
+/experiments/**/*_predictions.csv
+/experiments/**/pipeline_state.json
+/experiments/**/run_config.json
+/experiments/**/embedding_run_config.json
+/experiments/**/tsne_run_config.json
+
+# PDFs pessoais de contexto (nao publicados)
+/references/

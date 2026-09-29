@@ -1,0 +1,5 @@
+dataset,n,top1_name,top1_count,top1_fraction,music_top1_fraction,distortion_top1_fraction,distortion_top5_fraction,guitar_top5_fraction,effects_unit_top5_fraction
+Mono_Continuous,130000,Music,85923,0.660946,0.660946,0.000000,0.111869,0.118515,0.157969
+Mono_Discrete,123552,Music,84621,0.684902,0.684902,0.000000,0.118315,0.134793,0.168714
+Poly_Continuous,130000,Music,121888,0.937600,0.937600,0.001238,0.477346,0.529869,0.423846
+Poly_Discrete,83160,Music,75769,0.911123,0.911123,0.001744,0.445851,0.480351,0.415633
