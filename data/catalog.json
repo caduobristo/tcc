@@ -31,9 +31,9 @@
         "GUITAR-FX",
         "GUITAR-FX-DIST"
       ],
-      "raw_status": "missing",
+      "raw_status": "partially_available",
       "raw_root": "raw/guitar_fx_dist",
-      "baseline_features_status": "missing",
+      "baseline_features_status": "mono_disc_in_official_archive_not_materialized; other_scenarios_missing",
       "baseline_features_root": "processed/guitar_fx_dist/baseline",
       "baseline_feature_folder": "mel_22050_1024_512",
       "baseline_input_frames_bands": [
@@ -58,6 +58,59 @@
         "Mono_Discrete": "https://zenodo.org/records/4298000",
         "Poly_Continuous": "https://zenodo.org/records/4298017",
         "Poly_Discrete": "https://zenodo.org/records/4298025"
+      },
+      "raw_scenarios_available": [
+        "Mono_Discrete"
+      ],
+      "raw_scenarios_missing": [
+        "Mono_Continuous",
+        "Poly_Continuous",
+        "Poly_Discrete"
+      ],
+      "official_archives_root": "archives/guitar_fx_dist/official",
+      "transfer_learning": {
+        "scenario": "Mono_Discrete",
+        "raw_wavs": 164736,
+        "samples": 123552,
+        "classes": [
+          "808",
+          "BD2",
+          "BMF",
+          "DPL",
+          "DS1",
+          "FFC",
+          "MGS",
+          "OD1",
+          "RAT",
+          "RBM",
+          "SD1",
+          "TS9",
+          "VTB"
+        ],
+        "source_groups": 624,
+        "split_counts": {
+          "train": 88902,
+          "validation": 9702,
+          "test": 24948
+        },
+        "group_counts": {
+          "train": 449,
+          "validation": 49,
+          "test": 126
+        },
+        "seed": 42,
+        "manifest": "manifests/transfer_learning/mono_disc/samples.csv",
+        "manifest_sha256": "ddeb86c177deab02e364585be60680866b8cbc94926840dc669d3c17e02c816b",
+        "wav_integrity_ok": true,
+        "duplicate_wav_rows": 0,
+        "identical_wav_leakage": false,
+        "input": "WAV 44100 Hz mono; resample 32000 Hz, native checkpoint frontend",
+        "models": [
+          "passt",
+          "htsat"
+        ],
+        "embeddings_extracted": false,
+        "training_started": false
       }
     },
     {
@@ -398,5 +451,89 @@
     "root": "processed/guitar_fx_dist/mel32/subsets/first_2_per_class/Mono_Continuous",
     "files": 32,
     "purpose": "read/extraction verification; not a training split or complete dataset"
-  }
+  },
+  "official_raw_archives": [
+    {
+      "scenario": "Mono_Discrete",
+      "source": "https://zenodo.org/records/4298000",
+      "root": "archives/guitar_fx_dist/official/Mono_Discrete",
+      "volumes": 13,
+      "bytes": 26770255392,
+      "published_checksums_verified": true,
+      "extraction_crc_ok": true,
+      "restored_wavs": 164736,
+      "files": [
+        {
+          "name": "Mono_Discrete.z01",
+          "bytes": 2147483648,
+          "published_checksum": "md5:6302e01bebe4fd5f849a9684cdc18277"
+        },
+        {
+          "name": "Mono_Discrete.z02",
+          "bytes": 2147483648,
+          "published_checksum": "md5:aa114eba2d1f4dfb919c5d664fde3b55"
+        },
+        {
+          "name": "Mono_Discrete.z03",
+          "bytes": 2147483648,
+          "published_checksum": "md5:0b18fed33d9cddc66148dd6aa70dd607"
+        },
+        {
+          "name": "Mono_Discrete.z04",
+          "bytes": 2147483648,
+          "published_checksum": "md5:addd309fc67c220b80efc6e8d487e902"
+        },
+        {
+          "name": "Mono_Discrete.z05",
+          "bytes": 2147483648,
+          "published_checksum": "md5:1903507abf3c3317132360b5c7c0def7"
+        },
+        {
+          "name": "Mono_Discrete.z06",
+          "bytes": 2147483648,
+          "published_checksum": "md5:02a6e1f34eed88849da3d443b6f3f579"
+        },
+        {
+          "name": "Mono_Discrete.z07",
+          "bytes": 2147483648,
+          "published_checksum": "md5:5790b9085ec8311e45f1116a26d4ffde"
+        },
+        {
+          "name": "Mono_Discrete.z08",
+          "bytes": 2147483648,
+          "published_checksum": "md5:9ab92818dbe9388bfee8a52759780aaf"
+        },
+        {
+          "name": "Mono_Discrete.z09",
+          "bytes": 2147483648,
+          "published_checksum": "md5:d05e4b0802c41b1868443e9bfe06b5fb"
+        },
+        {
+          "name": "Mono_Discrete.z10",
+          "bytes": 2147483648,
+          "published_checksum": "md5:b399d761e8d20bbc88a7edb567f44dd3"
+        },
+        {
+          "name": "Mono_Discrete.z11",
+          "bytes": 2147483648,
+          "published_checksum": "md5:4f525980d6b5eba28aa4057dcccf1dd1"
+        },
+        {
+          "name": "Mono_Discrete.z12",
+          "bytes": 2147483648,
+          "published_checksum": "md5:3ac3a13985ae7765c884300e7ec69c03"
+        },
+        {
+          "name": "Mono_Discrete.zip",
+          "bytes": 1000451616,
+          "published_checksum": "md5:8939fdacb0f7894208a0e2d4c5d7b1bc"
+        },
+        {
+          "name": "README.md",
+          "bytes": 8887,
+          "published_checksum": "md5:4c979690439c7898ec851133083371ba"
+        }
+      ]
+    }
+  ]
 }

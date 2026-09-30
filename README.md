@@ -185,3 +185,9 @@ Os experimentos incluem código, documentação, licenças e resultados resumido
 ## 12. Organização dos dados locais
 
 O [catálogo de dados](data/README.md) define caminhos comuns para arquivos originais, representações processadas, metadados e auditorias. O [inventário de 30/09/2026](docs/data_inventory.md) cruza os dados disponíveis com o baseline e os experimentos. Os ZIPs mel16/mel32 são variantes processadas distintas das features originais da FxNet; o inventário registra a integridade e as lacunas para repetir cada execução.
+
+## 13. Transfer learning com encoder congelado
+
+Os notebooks [PaSST](notebooks/train_passt.ipynb) e [HTS-AT](notebooks/train_htsat.ipynb) preparam o primeiro experimento no Mono Discrete, usando WAVs originais, processamento nativo de cada checkpoint e as mesmas partições por gravação de origem. A extração completa de embeddings e o treinamento da nova cabeça ficam desativados por padrão. Não há fine-tuning nesta etapa.
+
+O [guia de preparação](docs/transfer_learning_setup.md) descreve ambiente, dados, pesos, controles de execução e estimativa de tempo nesta máquina. Dados e artefatos de execução permanecem locais.

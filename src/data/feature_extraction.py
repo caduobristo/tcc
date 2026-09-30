@@ -9,8 +9,9 @@ from joblib import Parallel, delayed
 def get_fbank(waveform, sample_rate, target_sr=16000):
     """
     Converte o áudio bruto em Log-Mel Spectrogram usando a implementação Kaldi.
-    Essa é exatamente a mesma representação interna esperada pelos feature_extractors 
-    do Hugging Face (AST, AudioMAE) e pelo pacote do PaSST.
+    Receita histórica dos ZIPs mel16/mel32 recebidos da dupla: 128 bandas Kaldi.
+    A taxa de amostragem não torna essa receita equivalente ao frontend de cada
+    checkpoint. Para PaSST/HTS-AT, use os frontends em src.models.transfer.
     """
     # Converter para mono caso tenha mais de um canal
     if waveform.shape[0] > 1:
@@ -21,8 +22,8 @@ def get_fbank(waveform, sample_rate, target_sr=16000):
         resampler = torchaudio.transforms.Resample(orig_freq=sample_rate, new_freq=target_sr)
         waveform = resampler(waveform)
     
-    # A implementação Fbank do Kaldi espera que o áudio (em float de -1 a 1)
-    # seja escalado para o range de 16-bits.
+    # Escala adotada na receita histórica dos ZIPs. Não é uma exigência universal
+    # dos frontends Kaldi/Transformers; preservar para reproduzir esses arquivos.
     waveform = waveform * 32768.0
     
     # Computar o Fbank (Log-Mel Spectrogram)

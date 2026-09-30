@@ -7,6 +7,7 @@ O inventário detalhado está em [docs/data_inventory.md](../docs/data_inventory
 ```text
 data/
   archives/guitar_fx_dist/             # 8 ZIPs de features + csvs.zip, nomes originais
+  archives/guitar_fx_dist/official/    # volumes oficiais do Zenodo por cenário
   archives/import_bundles/             # pacote do Drive que contém outra cópia de csvs.zip
   raw/<dataset>/                      # WAVs originais, quando disponíveis
   processed/guitar_fx_dist/baseline/   # features originais da FxNet, ainda ausentes
@@ -18,7 +19,7 @@ data/
   audits/                             # relatórios completos de integridade e consistência
 ```
 
-`raw/` e `processed/.../baseline/` são destinos definidos, não datasets já baixados. Não foram criadas pastas vazias para representar disponibilidade. `dados/` permanece como junção local para `archives/guitar_fx_dist/`, preservando os nove nomes de arquivos antigos. As junções antigas dos ambientes também foram mantidas.
+Os WAVs oficiais de **Mono Discrete** foram restaurados em `raw/guitar_fx_dist/Mono_Discrete/Audio/`. Os demais cenários de WAVs continuam ausentes. As features do baseline ainda não estão materializadas em `processed/.../baseline/`; as de Mono Discrete estão disponíveis dentro dos novos volumes oficiais. `dados/` permanece como junção local para `archives/guitar_fx_dist/`, preservando os nove nomes de arquivos antigos. As junções antigas dos ambientes também foram mantidas.
 
 Os identificadores são `guitar_fx_dist`, `gec_gim`, `gepe_gim`, `idmt_smt_guitar`, `idmt_smt_audio_effects` e `audioset`. Os cenários do GUITAR-FX preservam os nomes `Mono_Continuous`, `Mono_Discrete`, `Poly_Continuous` e `Poly_Discrete`, assim como os nomes de efeitos e amostras.
 
@@ -30,6 +31,8 @@ O usuário confirmou em 30/09/2026 que mel16 e mel32 correspondem a áudio reamo
 
 O notebook de geração indica 16 kHz para AST/AudioMAE e 32 kHz para PaSST/HTS-AT. Portanto, a escolha da variante depende do modelo e do pré-processamento esperado por seu checkpoint; não há motivo para adotar 32 kHz para todos os experimentos. A compatibilidade completa exige conferir escala e normalização, além da taxa de amostragem.
 
+Para os novos notebooks PaSST/HTS-AT, usamos os **WAVs**, reamostrados a 32 kHz sem multiplicação por 32768, e o frontend oficial de cada modelo: 128 bandas para PaSST, 64 para HTS-AT. Os ZIPs mel32 recebidos da dupla continuam preservados, mas não alimentam esses checkpoints. Consulte o [guia do transfer learning](../docs/transfer_learning_setup.md).
+
 A FxNet preservada recebe 87 quadros e 128 bandas. As features históricas `mel_22050_1024_512` devem ser restauradas em:
 
 ```text
@@ -39,6 +42,12 @@ data/processed/guitar_fx_dist/baseline/<cenario>/Features/<efeito>/
 ```
 
 O notebook do baseline já procura esse caminho e falha explicitamente quando as features não existem ou têm shape incompatível. Os ZIPs atuais não foram vinculados a esse caminho nem convertidos artificialmente para a forma esperada pela FxNet.
+
+## WAVs e índice para os novos experimentos
+
+O pacote oficial Mono Discrete tem 13 volumes de ZIP multipartes, cerca de 26,77 GB. Todos os volumes foram conferidos contra o MD5 publicado no Zenodo; a extração com CRC preserva 164.736 WAVs, incluindo MT2 e as duas pastas NoFX, e 14 CSVs. Nenhum desses arquivos é versionado.
+
+A indexação de transfer learning seleciona 123.552 WAVs nas 13 classes de efeitos sem MT2/NoFX. Ela verifica todos os áudios selecionados, registra SHA-256 e organiza treino/validação/teste por gravação original, com seed 42, em `manifests/transfer_learning/mono_disc/samples.csv`. O relatório correspondente é `samples.json`. As partições são compartilhadas por PaSST e HTS-AT; o loader confere o hash novamente ao ler cada amostra. Não foram extraídos embeddings completos nem executadas épocas de treinamento nesta preparação.
 
 Os scripts AudioMAE procuram WAVs em `data/raw/guitar_fx_dist/<cenario>/Audio/<efeito>/`; o PaSST procura áudios diretamente em `data/raw/gec_gim/` e aceita `--dataset` para outro arranjo. O avaliador histórico FxNet usa o destino central das features. Os outros notebooks de reprodução preservam os caminhos históricos de referência, que precisam ser ajustados ao restaurar os dados.
 

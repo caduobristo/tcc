@@ -251,3 +251,8 @@ __marimo__/
 # Pesos locais dos experimentos de transfer learning
 /checkpoints/pretrained_models/
 /checkpoints/best_ast*.pt
+
+# Preparacao/execucao de linear probing: ambientes, pesos e saidas locais
+/.venv-transfer/
+/checkpoints/transfer_learning/
+/results/transfer_learning/

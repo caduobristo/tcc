@@ -1,5 +1,25 @@
 # Inventário e integridade dos dados — 30/09/2026
 
+**Atualização após a auditoria inicial:** nesta mesma data, foram restaurados os WAVs oficiais de Mono Discrete para preparar os novos experimentos PaSST/HTS-AT. O inventário histórico abaixo mantém as lacunas encontradas inicialmente; a nova disponibilidade e a validação estão detalhadas na seção seguinte.
+
+## Restauração para PaSST e HTS-AT
+
+Foram baixados os 13 volumes oficiais do [Mono Discrete, Zenodo 4298000](https://zenodo.org/records/4298000), somando **26.770.255.392 bytes** sem o README. Todos passaram no MD5 publicado. O 7-Zip terminou a extração e a verificação de CRC sem erros: **164.736 WAVs e 14 CSVs**, 29.075.403.768 bytes no total. Os volumes ficam em `data/archives/guitar_fx_dist/official/Mono_Discrete/`; os áudios, em `data/raw/guitar_fx_dist/Mono_Discrete/Audio/`. As features originais do baseline também estão nesse arquivo oficial, mas não foram extraídas para o caminho do baseline.
+
+O índice compartilhado dos novos modelos seleciona **123.552 WAVs**, excluindo MT2 e ambas as pastas NoFX. Todos os arquivos selecionados foram decodificados e tiveram formato, duração, valores finitos e SHA-256 conferidos: mono, 44.100 Hz, 88.201 amostras. O loader reamostra para 32 kHz e mantém exatamente dois segundos. Não há WAVs selecionados byte a byte duplicados.
+
+As 624 gravações originais foram divididas com seed 42, preservando no mesmo conjunto todos os efeitos/parâmetros de cada fonte:
+
+| Partição | Fontes | WAVs |
+| --- | ---: | ---: |
+| Treino | 449 | 88.902 |
+| Validação | 49 | 9.702 |
+| Teste | 126 | 24.948 |
+
+Há 13 classes em cada partição e nenhuma fonte ou conteúdo WAV idêntico atravessa conjuntos. Índice e relatório ficam em `data/manifests/transfer_learning/mono_disc/samples.csv` e `samples.json`; a restauração está registrada em `data/audits/transfer_learning/raw_restore.json`. Esses artefatos são locais e ignorados pelo Git. Os frontends nativos dos checkpoints substituem, nestes dois novos experimentos, os mel32 Kaldi recebidos da dupla. Não foram produzidos embeddings completos nem iniciados treinamentos. Veja o [guia de preparação](transfer_learning_setup.md).
+
+Os WAVs de Mono Continuous, Poly Continuous e Poly Discrete, além de GEC-GIM, permanecem ausentes. Os ZIPs mel16/mel32 existentes continuam intactos.
+
 ## O que está disponível
 
 Foram encontrados nove ZIPs na antiga pasta `dados/`: oito variantes de espectrogramas do GUITAR-FX-DIST e um pacote de CSVs. Eles foram movidos, sem recompactação, para `data/archives/guitar_fx_dist/`. A pasta antiga é uma junção de compatibilidade. O pacote do Drive em Downloads foi copiado para `data/archives/import_bundles/`; contém outra cópia byte a byte de `csvs.zip`. O original em Downloads foi preservado.
