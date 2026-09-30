@@ -1,4 +1,4 @@
-# CUDA stack: install the wheel index documented in docs/transfer_learning_setup.md.
+# CUDA stack: install the required PyTorch wheels for this project.
 torch==2.10.0
 torchvision==0.25.0
 torchaudio==2.10.0

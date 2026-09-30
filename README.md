@@ -189,5 +189,3 @@ O [catálogo de dados](data/README.md) define caminhos comuns para arquivos orig
 ## 13. Transfer learning com encoder congelado
 
 Os notebooks [PaSST](notebooks/train_passt.ipynb) e [HTS-AT](notebooks/train_htsat.ipynb) preparam o primeiro experimento no Mono Discrete, usando WAVs originais, processamento nativo de cada checkpoint e as mesmas partições por gravação de origem. A extração completa de embeddings e o treinamento da nova cabeça ficam desativados por padrão. Não há fine-tuning nesta etapa.
-
-O [guia de preparação](docs/transfer_learning_setup.md) descreve ambiente, dados, pesos, controles de execução e estimativa de tempo nesta máquina. Dados e artefatos de execução permanecem locais.
