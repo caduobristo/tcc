@@ -1,0 +1,80 @@
+top5_name,count,fraction
+Music,1285,0.988462
+Musical instrument,1103,0.848462
+Guitar,665,0.511538
+Distortion,594,0.456923
+Effects unit,522,0.401538
+Plucked string instrument,310,0.238462
+Sound effect,288,0.221538
+Keyboard (musical),209,0.160769
+Cacophony,207,0.159231
+Vehicle,161,0.123846
+Synthesizer,159,0.122308
+Noise,104,0.080000
+Piano,103,0.079231
+Timpani,88,0.067692
+Electronic tuner,72,0.055385
+Electric piano,72,0.055385
+Car,51,0.039231
+Bass guitar,40,0.030769
+Television,37,0.028462
+Artillery fire,30,0.023077
+Electric guitar,26,0.020000
+White noise,24,0.018462
+Chorus effect,21,0.016154
+Scary music,20,0.015385
+Explosion,19,0.014615
+Speech,19,0.014615
+Pink noise,17,0.013077
+Church bell,16,0.012308
+"Gunshot, gunfire",15,0.011538
+Foghorn,14,0.010769
+Eruption,14,0.010769
+Motor vehicle (road),13,0.010000
+"Boat, Water vehicle",12,0.009231
+Heavy metal,12,0.009231
+Whir,11,0.008462
+Car passing by,11,0.008462
+"Vehicle horn, car horn, honking",10,0.007692
+Static,9,0.006923
+Clang,9,0.006923
+"Air horn, truck horn",7,0.005385
+Bang,7,0.005385
+Train horn,7,0.005385
+"Inside, small room",6,0.004615
+Bell,5,0.003846
+Aircraft,5,0.003846
+Drum,4,0.003077
+Reverberation,4,0.003077
+Machine gun,4,0.003077
+Helicopter,4,0.003077
+Sampler,4,0.003077
+Bus,4,0.003077
+"Motorboat, speedboat",4,0.003077
+Ding,4,0.003077
+Sine wave,2,0.001538
+Microwave oven,2,0.001538
+Angry music,2,0.001538
+Ship,2,0.001538
+Engine,2,0.001538
+Mechanisms,2,0.001538
+"Accelerating, revving, vroom",2,0.001538
+Gong,2,0.001538
+Train,2,0.001538
+Train whistle,2,0.001538
+Organ,2,0.001538
+Steam whistle,2,0.001538
+Fusillade,2,0.001538
+"Burst, pop",1,0.000769
+Hum,1,0.000769
+Chirp tone,1,0.000769
+Strum,1,0.000769
+Sidetone,1,0.000769
+Vibration,1,0.000769
+Breaking,1,0.000769
+Crack,1,0.000769
+Theme music,1,0.000769
+Electronic music,1,0.000769
+Rock music,1,0.000769
+Trombone,1,0.000769
+Doorbell,1,0.000769

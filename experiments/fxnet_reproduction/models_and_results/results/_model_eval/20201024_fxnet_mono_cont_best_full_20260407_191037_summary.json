@@ -1,0 +1,14 @@
+{
+  "model_name": "20201024_fxnet_mono_cont_best",
+  "split": "full",
+  "dataset_root": "C:\\TCC\\Reproduzir_artigo\\data\\GUITAR-FX\\Poly_Discrete\\Features",
+  "exclude_folders": [
+    "MT2"
+  ],
+  "device": "cuda",
+  "samples": 83160,
+  "avg_loss": 0.37412345151655396,
+  "total_correct": 11765,
+  "accuracy": 0.14147426647426647,
+  "predictions_csv": "C:\\TCC\\Reproduzir_artigo\\models_and_results\\results\\_model_eval\\20201024_fxnet_mono_cont_best_full_20260407_191037_predictions.csv"
+}

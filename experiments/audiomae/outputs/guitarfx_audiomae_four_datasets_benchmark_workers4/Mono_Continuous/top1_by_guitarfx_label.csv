@@ -1,0 +1,57 @@
+source_label,n,top1_name,count,fraction
+808,100,Music,82,0.820000
+808,100,"Air horn, truck horn",11,0.110000
+808,100,Synthesizer,7,0.070000
+BD2,100,Music,62,0.620000
+BD2,100,"Air horn, truck horn",34,0.340000
+BD2,100,Synthesizer,3,0.030000
+BD2,100,Sound effect,1,0.010000
+BMF,100,Music,67,0.670000
+BMF,100,"Air horn, truck horn",18,0.180000
+BMF,100,Synthesizer,13,0.130000
+BMF,100,Sine wave,2,0.020000
+DPL,100,Music,54,0.540000
+DPL,100,"Air horn, truck horn",39,0.390000
+DPL,100,Synthesizer,6,0.060000
+DPL,100,Sound effect,1,0.010000
+DS1,100,Music,61,0.610000
+DS1,100,"Air horn, truck horn",20,0.200000
+DS1,100,Synthesizer,11,0.110000
+DS1,100,Noise,6,0.060000
+DS1,100,Train,1,0.010000
+DS1,100,Sine wave,1,0.010000
+FFC,100,Music,53,0.530000
+FFC,100,"Air horn, truck horn",45,0.450000
+FFC,100,Noise,1,0.010000
+FFC,100,Synthesizer,1,0.010000
+MGS,100,Music,83,0.830000
+MGS,100,"Air horn, truck horn",15,0.150000
+MGS,100,Sine wave,1,0.010000
+MGS,100,Synthesizer,1,0.010000
+OD1,100,Music,80,0.800000
+OD1,100,"Air horn, truck horn",11,0.110000
+OD1,100,Synthesizer,4,0.040000
+OD1,100,Train,3,0.030000
+OD1,100,Noise,1,0.010000
+OD1,100,Siren,1,0.010000
+RAT,100,Music,69,0.690000
+RAT,100,"Air horn, truck horn",26,0.260000
+RAT,100,Sine wave,3,0.030000
+RAT,100,Synthesizer,2,0.020000
+RBM,100,Music,61,0.610000
+RBM,100,Synthesizer,24,0.240000
+RBM,100,"Air horn, truck horn",11,0.110000
+RBM,100,Sine wave,2,0.020000
+RBM,100,Noise,2,0.020000
+SD1,100,Music,76,0.760000
+SD1,100,"Air horn, truck horn",18,0.180000
+SD1,100,Synthesizer,4,0.040000
+SD1,100,Noise,1,0.010000
+SD1,100,Electronic tuner,1,0.010000
+TS9,100,Music,78,0.780000
+TS9,100,"Air horn, truck horn",9,0.090000
+TS9,100,Synthesizer,8,0.080000
+TS9,100,Electronic tuner,4,0.040000
+TS9,100,Noise,1,0.010000
+VTB,100,"Air horn, truck horn",55,0.550000
+VTB,100,Music,45,0.450000

@@ -1,0 +1,21 @@
+top5_name,count,fraction
+Music,26,1.000000
+Musical instrument,23,0.884615
+Guitar,12,0.461538
+Distortion,10,0.384615
+Effects unit,10,0.384615
+Cacophony,7,0.269231
+Timpani,6,0.230769
+Keyboard (musical),5,0.192308
+Sound effect,5,0.192308
+Vehicle,5,0.192308
+Piano,4,0.153846
+Plucked string instrument,4,0.153846
+Electric piano,3,0.115385
+Car,3,0.115385
+Synthesizer,2,0.076923
+"Inside, small room",1,0.038462
+Pink noise,1,0.038462
+Noise,1,0.038462
+Echo,1,0.038462
+Electric guitar,1,0.038462

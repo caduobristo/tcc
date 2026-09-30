@@ -1,0 +1,11 @@
+# Local environment and caches
+.conda/
+.cache/
+
+# Datasets and outputs
+data/
+models_and_results/
+
+# Notebook/runtime artifacts
+.ipynb_checkpoints/
+__pycache__/

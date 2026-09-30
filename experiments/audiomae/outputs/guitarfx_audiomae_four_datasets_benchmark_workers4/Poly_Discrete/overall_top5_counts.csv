@@ -1,0 +1,85 @@
+top5_name,count,fraction
+Music,1275,0.980769
+Musical instrument,1052,0.809231
+Guitar,651,0.500769
+Distortion,577,0.443846
+Effects unit,500,0.384615
+Plucked string instrument,302,0.232308
+Sound effect,273,0.210000
+Cacophony,216,0.166154
+Keyboard (musical),196,0.150769
+Vehicle,188,0.144615
+Synthesizer,156,0.120000
+Piano,94,0.072308
+Noise,87,0.066923
+Timpani,85,0.065385
+Electric piano,72,0.055385
+Car,58,0.044615
+Electronic tuner,56,0.043077
+White noise,44,0.033846
+Pink noise,43,0.033077
+Television,42,0.032308
+Electric guitar,40,0.030769
+Bass guitar,35,0.026923
+Artillery fire,32,0.024615
+Speech,29,0.022308
+Eruption,27,0.020769
+Explosion,26,0.020000
+Scary music,25,0.019231
+"Gunshot, gunfire",23,0.017692
+"Boat, Water vehicle",21,0.016154
+Motor vehicle (road),21,0.016154
+Static,19,0.014615
+Church bell,19,0.014615
+Car passing by,16,0.012308
+Clang,15,0.011538
+Chorus effect,12,0.009231
+"Vehicle horn, car horn, honking",12,0.009231
+Foghorn,11,0.008462
+Bang,9,0.006923
+"Motorboat, speedboat",8,0.006154
+Train horn,8,0.006154
+Helicopter,7,0.005385
+"Inside, small room",7,0.005385
+"Air horn, truck horn",6,0.004615
+Boom,6,0.004615
+Heavy metal,6,0.004615
+Fusillade,5,0.003846
+Bus,5,0.003846
+Aircraft,5,0.003846
+Whir,5,0.003846
+Bell,5,0.003846
+Echo,5,0.003846
+Sampler,4,0.003077
+"Burst, pop",4,0.003077
+Buzzer,4,0.003077
+Gong,4,0.003077
+"Race car, auto racing",4,0.003077
+Trombone,3,0.002308
+Ship,3,0.002308
+Ding,3,0.002308
+Siren,3,0.002308
+Strum,2,0.001538
+Machine gun,2,0.001538
+Rumble,2,0.001538
+Hum,2,0.001538
+Mechanisms,2,0.001538
+Organ,2,0.001538
+Engine,2,0.001538
+Thunder,1,0.000769
+Wind noise (microphone),1,0.000769
+Wind,1,0.000769
+Boing,1,0.000769
+Drum,1,0.000769
+Sidetone,1,0.000769
+Waterfall,1,0.000769
+Mains hum,1,0.000769
+Theme music,1,0.000769
+Steam whistle,1,0.000769
+Silence,1,0.000769
+Reverberation,1,0.000769
+Dial tone,1,0.000769
+Civil defense siren,1,0.000769
+Microwave oven,1,0.000769
+"Propeller, airscrew",1,0.000769
+"Whoosh, swoosh, swish",1,0.000769

@@ -167,3 +167,21 @@ Espera-se que o projeto resulte em:
 - Análise do impacto de diferentes representações de áudio no desempenho dos modelos
 - Comparação entre abordagens baseadas em CNNs e Transformers
 - Geração de insights sobre modelagem computacional de timbre musical
+
+---
+
+## 11. Experimentos de reprodução
+
+As tentativas de reprodução e explorações iniciais estão organizadas em [experiments/](experiments/README.md):
+
+- [FxNet e redes de estimação de parâmetros](experiments/fxnet_reproduction/README.md): snapshot do código de Comunità et al., adaptações locais e registros de execuções concluídas e com falhas.
+- [AudioMAE](experiments/audiomae/README.md): validação do modelo pré-treinado, inferência AudioSet e exploração de embeddings de guitarra.
+- [PaSST](experiments/passt/README.md): extração e análise exploratória de embeddings.
+
+A baseline consolidada possui seu próprio [notebook de treinamento](notebooks/train_baseline.ipynb) e [relatório de resultados](results/baseline_results_report.md). Ela deve ser distinguida das reproduções históricas acima.
+
+Os experimentos incluem código, documentação, licenças e resultados resumidos. Datasets, ambientes, checkpoints das reproduções e artefatos volumosos devem ser preparados localmente, conforme o README de cada experimento.
+
+## 12. Organização dos dados locais
+
+O [catálogo de dados](data/README.md) define caminhos comuns para arquivos originais, representações processadas, metadados e auditorias. O [inventário de 30/09/2026](docs/data_inventory.md) cruza os dados disponíveis com o baseline e os experimentos. Os ZIPs mel16/mel32 são variantes processadas distintas das features originais da FxNet; o inventário registra a integridade e as lacunas para repetir cada execução.

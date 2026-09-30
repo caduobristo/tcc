@@ -1,0 +1,402 @@
+{
+  "schema_version": 1,
+  "audited_on": "2026-09-30",
+  "paths_relative_to": "data/ or TCC_DATA_ROOT",
+  "processed_data_provenance": {
+    "source": "Drive compartilhado pela dupla do TCC; informado pelo usuario em 30/09/2026",
+    "original_download_name": "GUITAR-FX transformer processed",
+    "producer_recipe_available": true,
+    "mel16_mel32_meaning": "target sampling rates 16000 Hz and 32000 Hz, confirmed by user and generator notebook",
+    "known_use_by_colleague": "train_ast.ipynb selects mel_16 / Mono_Discrete; saved outputs show 123552 samples and 13 classes, without training results",
+    "external_reference_checksums_available": false,
+    "recipe_branch": "feature/transfer-learning",
+    "recipe_commit": "02563bb",
+    "recipe_notebook": "notebooks/generate_features.ipynb",
+    "recipe_module": "src/data/feature_extraction.py",
+    "recipe": {
+      "mono": true,
+      "waveform_scale": 32768.0,
+      "num_mel_bins": 128,
+      "window_type": "hanning",
+      "frame_shift_ms": 10,
+      "dither": 0.0,
+      "htk_compat": true
+    },
+    "producer_environment_versions_available": false
+  },
+  "datasets": [
+    {
+      "id": "guitar_fx_dist",
+      "aliases": [
+        "GUITAR-FX",
+        "GUITAR-FX-DIST"
+      ],
+      "raw_status": "missing",
+      "raw_root": "raw/guitar_fx_dist",
+      "baseline_features_status": "missing",
+      "baseline_features_root": "processed/guitar_fx_dist/baseline",
+      "baseline_feature_folder": "mel_22050_1024_512",
+      "baseline_input_frames_bands": [
+        87,
+        128
+      ],
+      "available_variants": [
+        "mel16",
+        "mel32"
+      ],
+      "available_variant_status": "fully_audited_archives",
+      "available_shape": [
+        198,
+        128
+      ],
+      "available_dtype": "float32",
+      "processed_features_replace_baseline": false,
+      "metadata_source_root": "metadata/guitar_fx_dist",
+      "metadata_validated_root": "metadata/guitar_fx_dist/validated",
+      "sources": {
+        "Mono_Continuous": "https://zenodo.org/records/4296040",
+        "Mono_Discrete": "https://zenodo.org/records/4298000",
+        "Poly_Continuous": "https://zenodo.org/records/4298017",
+        "Poly_Discrete": "https://zenodo.org/records/4298025"
+      }
+    },
+    {
+      "id": "gec_gim",
+      "status": "raw_missing_embeddings_available",
+      "raw_root": "raw/gec_gim",
+      "usage": "PaSST: 109 embeddings, 11 classes; provenance named GEC-PIM in the issue needs confirmation",
+      "source": "https://github.com/kevingerkens/gitfx"
+    },
+    {
+      "id": "gepe_gim",
+      "status": "not_found",
+      "raw_root": "raw/gepe_gim",
+      "usage": "documented; no local run confirmed",
+      "source": "https://github.com/kevingerkens/gitfx"
+    },
+    {
+      "id": "idmt_smt_guitar",
+      "status": "not_found",
+      "raw_root": "raw/idmt_smt_guitar",
+      "usage": "planned synthetic data source",
+      "source": "https://www.idmt.fraunhofer.de/en/publications/datasets/guitar.html"
+    },
+    {
+      "id": "idmt_smt_audio_effects",
+      "status": "standalone_collection_not_found",
+      "raw_root": "raw/idmt_smt_audio_effects",
+      "usage": "reference; GUITAR-FX origin does not imply complete local IDMT download",
+      "source": "https://www.idmt.fraunhofer.de/en/publications/datasets/audio_effects.html"
+    },
+    {
+      "id": "audioset",
+      "status": "not_found",
+      "raw_root": "raw/audioset",
+      "usage": "AudioMAE evaluation template; pretrained weights available"
+    }
+  ],
+  "archives": [
+    {
+      "archive": "archives/guitar_fx_dist/mono_cont_mel16-002.zip",
+      "scenario": "Mono_Continuous",
+      "variant": "mel16",
+      "bytes": 14371065064,
+      "sha256": "4414c4388e88ac4e2ea4667813c7c1587a7a70b6c5725926fb6f334fe85ee3b0",
+      "checked_members": 141248,
+      "class_counts": {
+        "DPL": 10000,
+        "BD2": 10000,
+        "RAT": 10000,
+        "FFC": 10000,
+        "VTB": 10000,
+        "OD1": 10000,
+        "_NoFX_mono": 624,
+        "DS1": 10000,
+        "808": 10000,
+        "_NoFX_mono_preprocessed": 624,
+        "MGS": 10000,
+        "TS9": 10000,
+        "MT2": 10000,
+        "BMF": 10000,
+        "SD1": 10000,
+        "RBM": 10000
+      },
+      "shapes": {
+        "(198, 128)": 141248
+      },
+      "dtypes": {
+        "float32": 141248
+      },
+      "binary_integrity_ok": true,
+      "metadata_alignment_ok": false,
+      "target_sample_rate_hz": 16000
+    },
+    {
+      "archive": "archives/guitar_fx_dist/mono_cont_mel32-001.zip",
+      "scenario": "Mono_Continuous",
+      "variant": "mel32",
+      "bytes": 14371065064,
+      "sha256": "205587a25026bce33905c87270c5cffefd6e7306902fa1e763d81a11b01a4c80",
+      "checked_members": 141248,
+      "class_counts": {
+        "DPL": 10000,
+        "BD2": 10000,
+        "RAT": 10000,
+        "FFC": 10000,
+        "VTB": 10000,
+        "OD1": 10000,
+        "_NoFX_mono": 624,
+        "DS1": 10000,
+        "808": 10000,
+        "_NoFX_mono_preprocessed": 624,
+        "MGS": 10000,
+        "TS9": 10000,
+        "MT2": 10000,
+        "BMF": 10000,
+        "SD1": 10000,
+        "RBM": 10000
+      },
+      "shapes": {
+        "(198, 128)": 141248
+      },
+      "dtypes": {
+        "float32": 141248
+      },
+      "binary_integrity_ok": true,
+      "metadata_alignment_ok": false,
+      "target_sample_rate_hz": 32000
+    },
+    {
+      "archive": "archives/guitar_fx_dist/mono_disc_mel16-001.zip",
+      "scenario": "Mono_Discrete",
+      "variant": "mel16",
+      "bytes": 16759981024,
+      "sha256": "95ead2dc6c672653f792ffcf7ccd9224feda083b817c2b5c281b9c2fec649314",
+      "checked_members": 164736,
+      "class_counts": {
+        "DPL": 2496,
+        "BD2": 12480,
+        "RAT": 12480,
+        "FFC": 3120,
+        "VTB": 3120,
+        "OD1": 2496,
+        "_NoFX_mono": 624,
+        "DS1": 12480,
+        "808": 12480,
+        "_NoFX_mono_preprocessed": 624,
+        "MGS": 12480,
+        "TS9": 12480,
+        "MT2": 39936,
+        "BMF": 12480,
+        "SD1": 12480,
+        "RBM": 12480
+      },
+      "shapes": {
+        "(198, 128)": 164736
+      },
+      "dtypes": {
+        "float32": 164736
+      },
+      "binary_integrity_ok": true,
+      "metadata_alignment_ok": true,
+      "target_sample_rate_hz": 16000
+    },
+    {
+      "archive": "archives/guitar_fx_dist/mono_disc_mel32-004.zip",
+      "scenario": "Mono_Discrete",
+      "variant": "mel32",
+      "bytes": 16759981024,
+      "sha256": "9df1b126b547e348870ba5c2c7c3db3df6adf6b36c7a8f3c87e77fc64bd3dd18",
+      "checked_members": 164736,
+      "class_counts": {
+        "DPL": 2496,
+        "BD2": 12480,
+        "RAT": 12480,
+        "FFC": 3120,
+        "VTB": 3120,
+        "OD1": 2496,
+        "_NoFX_mono": 624,
+        "DS1": 12480,
+        "808": 12480,
+        "_NoFX_mono_preprocessed": 624,
+        "MGS": 12480,
+        "TS9": 12480,
+        "MT2": 39936,
+        "BMF": 12480,
+        "SD1": 12480,
+        "RBM": 12480
+      },
+      "shapes": {
+        "(198, 128)": 164736
+      },
+      "dtypes": {
+        "float32": 164736
+      },
+      "binary_integrity_ok": true,
+      "metadata_alignment_ok": true,
+      "target_sample_rate_hz": 32000
+    },
+    {
+      "archive": "archives/guitar_fx_dist/poly_cont_mel16-004.zip",
+      "scenario": "Poly_Continuous",
+      "variant": "mel16",
+      "bytes": 14329548380,
+      "sha256": "ac86687c345f3bcf5dd74971f94256b601b0b1bf97c34209e8fd789b78033a84",
+      "checked_members": 140840,
+      "class_counts": {
+        "DPL": 10000,
+        "BD2": 10000,
+        "RAT": 10000,
+        "FFC": 10000,
+        "VTB": 10000,
+        "OD1": 10000,
+        "DS1": 10000,
+        "808": 10000,
+        "MGS": 10000,
+        "TS9": 10000,
+        "MT2": 10000,
+        "_NoFX_poly_preprocessed": 420,
+        "_NoFX_poly": 420,
+        "BMF": 10000,
+        "SD1": 10000,
+        "RBM": 10000
+      },
+      "shapes": {
+        "(198, 128)": 140840
+      },
+      "dtypes": {
+        "float32": 140840
+      },
+      "binary_integrity_ok": true,
+      "metadata_alignment_ok": false,
+      "target_sample_rate_hz": 16000
+    },
+    {
+      "archive": "archives/guitar_fx_dist/poly_cont_mel32-003.zip",
+      "scenario": "Poly_Continuous",
+      "variant": "mel32",
+      "bytes": 14329548380,
+      "sha256": "512c32f1af1cda847bdfa74466cc87155939b9ef32c2201a81ab6347e9a90c14",
+      "checked_members": 140840,
+      "class_counts": {
+        "DPL": 10000,
+        "BD2": 10000,
+        "RAT": 10000,
+        "FFC": 10000,
+        "VTB": 10000,
+        "OD1": 10000,
+        "DS1": 10000,
+        "808": 10000,
+        "MGS": 10000,
+        "TS9": 10000,
+        "MT2": 10000,
+        "_NoFX_poly_preprocessed": 420,
+        "_NoFX_poly": 420,
+        "BMF": 10000,
+        "SD1": 10000,
+        "RBM": 10000
+      },
+      "shapes": {
+        "(198, 128)": 140840
+      },
+      "dtypes": {
+        "float32": 140840
+      },
+      "binary_integrity_ok": true,
+      "metadata_alignment_ok": false,
+      "target_sample_rate_hz": 32000
+    },
+    {
+      "archive": "archives/guitar_fx_dist/poly_disc_mel16-003.zip",
+      "scenario": "Poly_Discrete",
+      "variant": "mel16",
+      "bytes": 11280591616,
+      "sha256": "c9f1d2094fa07354712b7847ae73db9d4ddf958c8a813af9174c76836c8fa396",
+      "checked_members": 110880,
+      "class_counts": {
+        "DPL": 1680,
+        "BD2": 8400,
+        "RAT": 8400,
+        "FFC": 2100,
+        "VTB": 2100,
+        "OD1": 1680,
+        "DS1": 8400,
+        "808": 8400,
+        "MGS": 8400,
+        "TS9": 8400,
+        "MT2": 26880,
+        "_NoFX_poly_preprocessed": 420,
+        "_NoFX_poly": 420,
+        "BMF": 8400,
+        "SD1": 8400,
+        "RBM": 8400
+      },
+      "shapes": {
+        "(198, 128)": 110880
+      },
+      "dtypes": {
+        "float32": 110880
+      },
+      "binary_integrity_ok": true,
+      "metadata_alignment_ok": true,
+      "target_sample_rate_hz": 16000
+    },
+    {
+      "archive": "archives/guitar_fx_dist/poly_disc_mel32-002.zip",
+      "scenario": "Poly_Discrete",
+      "variant": "mel32",
+      "bytes": 11280591616,
+      "sha256": "e937090b55aac0220ea39c340379b5c3325b87022ec5e801b7e9676db73e433b",
+      "checked_members": 110880,
+      "class_counts": {
+        "DPL": 1680,
+        "BD2": 8400,
+        "RAT": 8400,
+        "FFC": 2100,
+        "VTB": 2100,
+        "OD1": 1680,
+        "DS1": 8400,
+        "808": 8400,
+        "MGS": 8400,
+        "TS9": 8400,
+        "MT2": 26880,
+        "_NoFX_poly_preprocessed": 420,
+        "_NoFX_poly": 420,
+        "BMF": 8400,
+        "SD1": 8400,
+        "RBM": 8400
+      },
+      "shapes": {
+        "(198, 128)": 110880
+      },
+      "dtypes": {
+        "float32": 110880
+      },
+      "binary_integrity_ok": true,
+      "metadata_alignment_ok": true,
+      "target_sample_rate_hz": 32000
+    }
+  ],
+  "metadata_archive": {
+    "archive": "archives/guitar_fx_dist/csvs.zip",
+    "sha256": "b57b429b02037bb0d49f1200a896594c5336b24201c3465daf9e911d9b7a25bd",
+    "tables": 56
+  },
+  "integrity": {
+    "feature_members_checked": 1115408,
+    "binary_integrity_ok": true,
+    "metadata_source_consistent": false,
+    "exact_duplicate_metadata_rows": 11366,
+    "metadata_filenames_without_features": 31,
+    "validated_metadata_rows": 553528,
+    "duplicate_array_pairs_per_poly_cont_variant": 12,
+    "full_report": "audits/integrity_report.json",
+    "metadata_details": "audits/metadata_consistency.json",
+    "artifacts_report": "audits/artifact_inventory.json"
+  },
+  "materialized_subset": {
+    "root": "processed/guitar_fx_dist/mel32/subsets/first_2_per_class/Mono_Continuous",
+    "files": 32,
+    "purpose": "read/extraction verification; not a training split or complete dataset"
+  }
+}

@@ -1,0 +1,28 @@
+top5_name,count,fraction
+Music,26,1.000000
+Musical instrument,16,0.615385
+Synthesizer,15,0.576923
+"Air horn, truck horn",9,0.346154
+Keyboard (musical),8,0.307692
+Sound effect,7,0.269231
+Electronic tuner,6,0.230769
+Effects unit,6,0.230769
+Distortion,5,0.192308
+Guitar,4,0.153846
+Sampler,3,0.115385
+Sine wave,3,0.115385
+Noise,3,0.115385
+"Vehicle horn, car horn, honking",3,0.115385
+Electric piano,2,0.076923
+"Inside, small room",2,0.076923
+Plucked string instrument,2,0.076923
+Tapping (guitar technique),1,0.038462
+Mains hum,1,0.038462
+Hum,1,0.038462
+Chirp tone,1,0.038462
+Cacophony,1,0.038462
+Electric guitar,1,0.038462
+Foghorn,1,0.038462
+Ping,1,0.038462
+Alarm,1,0.038462
+Fire alarm,1,0.038462

@@ -1,0 +1,152 @@
+top5_name,count,fraction
+Music,115962,0.938568
+Synthesizer,83635,0.676921
+Musical instrument,64747,0.524047
+"Air horn, truck horn",44772,0.362374
+Sound effect,42924,0.347416
+Keyboard (musical),35894,0.290517
+Electronic tuner,27280,0.220798
+Effects unit,20845,0.168714
+Sampler,20675,0.167338
+"Vehicle horn, car horn, honking",16655,0.134802
+Guitar,16654,0.134793
+Noise,15745,0.127436
+Distortion,14618,0.118315
+Sine wave,10430,0.084418
+Plucked string instrument,9518,0.077036
+Vehicle,8937,0.072334
+Electric piano,8481,0.068643
+Cacophony,6618,0.053564
+Train,6436,0.052091
+Siren,5724,0.046329
+"Inside, small room",5430,0.043949
+Piano,3315,0.026831
+Chirp tone,2853,0.023091
+Boing,2194,0.017758
+Rail transport,1925,0.015580
+Alarm,1784,0.014439
+Foghorn,1771,0.014334
+Electric guitar,1591,0.012877
+Car alarm,1183,0.009575
+Buzzer,1063,0.008604
+Civil defense siren,890,0.007203
+Busy signal,872,0.007058
+Fire alarm,865,0.007001
+Explosion,833,0.006742
+Wind,654,0.005293
+Brass instrument,612,0.004953
+"Wind instrument, woodwind instrument",608,0.004921
+Eruption,607,0.004913
+Ship,603,0.004881
+Sidetone,595,0.004816
+Echo,589,0.004767
+Ping,570,0.004613
+Wind noise (microphone),545,0.004411
+Static,542,0.004387
+"Railroad car, train wagon",506,0.004095
+Bicycle bell,458,0.003707
+Plop,441,0.003569
+Chorus effect,430,0.003480
+Timpani,429,0.003472
+"Outside, rural or natural",375,0.003035
+Theremin,358,0.002898
+Hum,352,0.002849
+Train horn,349,0.002825
+"Electric shaver, electric razor",306,0.002477
+"Beep, bleep",297,0.002404
+Tapping (guitar technique),241,0.001951
+Ambulance (siren),229,0.001853
+"Boat, Water vehicle",227,0.001837
+French horn,222,0.001797
+Ding,215,0.001740
+Didgeridoo,188,0.001522
+Mains hum,167,0.001352
+Trombone,166,0.001344
+Clang,166,0.001344
+Throbbing,136,0.001101
+Trumpet,127,0.001028
+White noise,125,0.001012
+Church bell,120,0.000971
+Aircraft,119,0.000963
+"Outside, urban or manmade",115,0.000931
+Pink noise,113,0.000915
+Fireworks,111,0.000898
+Bass guitar,106,0.000858
+Shofar,101,0.000817
+Silence,91,0.000737
+Bell,83,0.000672
+Bagpipes,83,0.000672
+Doorbell,82,0.000664
+Scary music,82,0.000664
+Ding-dong,68,0.000550
+Harmonic,67,0.000542
+"Fixed-wing aircraft, airplane",64,0.000518
+Dial tone,63,0.000510
+Sitar,61,0.000494
+Toot,53,0.000429
+Boom,53,0.000429
+Helicopter,43,0.000348
+Ocean,42,0.000340
+Truck,30,0.000243
+Heavy metal,27,0.000219
+Speech,26,0.000210
+Artillery fire,26,0.000210
+Rain,24,0.000194
+Pizzicato,24,0.000194
+Reverberation,22,0.000178
+Electric toothbrush,21,0.000170
+Car,21,0.000170
+Banjo,18,0.000146
+"Propeller, airscrew",17,0.000138
+"Burst, pop",17,0.000138
+Electronic music,17,0.000138
+"Gunshot, gunfire",13,0.000105
+Theme music,12,0.000097
+"Smoke detector, smoke alarm",12,0.000097
+"Inside, large room or hall",11,0.000089
+Angry music,9,0.000073
+Zither,9,0.000073
+Fart,9,0.000073
+Emergency vehicle,7,0.000057
+Bang,7,0.000057
+"Motorboat, speedboat",6,0.000049
+"Violin, fiddle",5,0.000040
+Thunder,5,0.000040
+Crushing,5,0.000040
+Telephone bell ringing,5,0.000040
+Breaking,5,0.000040
+Drum machine,5,0.000040
+"Waves, surf",4,0.000032
+Fire,4,0.000032
+Buzz,4,0.000032
+Fusillade,4,0.000032
+Thunderstorm,4,0.000032
+Ukulele,4,0.000032
+Train whistle,3,0.000024
+Machine gun,3,0.000024
+Skateboard,3,0.000024
+Motorcycle,3,0.000024
+Sonar,3,0.000024
+Harmonica,2,0.000016
+Rain on surface,2,0.000016
+Pulse,2,0.000016
+Heart murmur,2,0.000016
+"Whoosh, swoosh, swish",2,0.000016
+Crackle,2,0.000016
+Stomach rumble,2,0.000016
+Power tool,2,0.000016
+Bowed string instrument,2,0.000016
+Tubular bells,1,0.000008
+Clock,1,0.000008
+Alarm clock,1,0.000008
+Field recording,1,0.000008
+Creak,1,0.000008
+Rumble,1,0.000008
+Firecracker,1,0.000008
+Squeak,1,0.000008
+Television,1,0.000008
+Door,1,0.000008
+"Smash, crash",1,0.000008
+Crack,1,0.000008
+Coin (dropping),1,0.000008
+Squeal,1,0.000008

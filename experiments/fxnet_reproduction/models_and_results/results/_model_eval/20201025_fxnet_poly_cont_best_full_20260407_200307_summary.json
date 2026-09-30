@@ -1,0 +1,130 @@
+{
+  "model_name": "20201025_fxnet_poly_cont_best",
+  "split": "full",
+  "dataset_root": "C:\\TCC\\Reproduzir_artigo\\data\\GUITAR-FX\\Poly_Discrete\\Features",
+  "exclude_folders": [
+    "MT2"
+  ],
+  "device": "cuda",
+  "samples": 83160,
+  "avg_loss": 0.7619377063526948,
+  "total_correct": 69674,
+  "accuracy": 0.8378306878306878,
+  "macro_precision": 0.8664069776916369,
+  "macro_recall": 0.8748260073260072,
+  "macro_f1": 0.8581302948715008,
+  "weighted_precision": 0.8473492641702468,
+  "weighted_recall": 0.8378306878306878,
+  "weighted_f1": 0.8272437461776151,
+  "balanced_accuracy": 0.8748260073260072,
+  "predictions_csv": "C:\\TCC\\Reproduzir_artigo\\models_and_results\\results\\_model_eval\\20201025_fxnet_poly_cont_best_full_20260407_200307_predictions.csv",
+  "per_class_csv": "C:\\TCC\\Reproduzir_artigo\\models_and_results\\results\\_model_eval\\20201025_fxnet_poly_cont_best_full_20260407_200307_per_class.csv",
+  "confusion_matrix_csv": "C:\\TCC\\Reproduzir_artigo\\models_and_results\\results\\_model_eval\\20201025_fxnet_poly_cont_best_full_20260407_200307_confusion_matrix.csv",
+  "top_confusions": [
+    {
+      "true_label": 11,
+      "true_fx": "TS9",
+      "pred_label": 0,
+      "pred_fx": "808",
+      "count": 6258
+    },
+    {
+      "true_label": 1,
+      "true_fx": "BD2",
+      "pred_label": 2,
+      "pred_fx": "BMF",
+      "count": 2164
+    },
+    {
+      "true_label": 0,
+      "true_fx": "808",
+      "pred_label": 11,
+      "pred_fx": "TS9",
+      "count": 2138
+    },
+    {
+      "true_label": 1,
+      "true_fx": "BD2",
+      "pred_label": 4,
+      "pred_fx": "DS1",
+      "count": 789
+    },
+    {
+      "true_label": 1,
+      "true_fx": "BD2",
+      "pred_label": 10,
+      "pred_fx": "SD1",
+      "count": 617
+    },
+    {
+      "true_label": 10,
+      "true_fx": "SD1",
+      "pred_label": 7,
+      "pred_fx": "OD1",
+      "count": 446
+    },
+    {
+      "true_label": 1,
+      "true_fx": "BD2",
+      "pred_label": 0,
+      "pred_fx": "808",
+      "count": 195
+    },
+    {
+      "true_label": 2,
+      "true_fx": "BMF",
+      "pred_label": 4,
+      "pred_fx": "DS1",
+      "count": 126
+    },
+    {
+      "true_label": 1,
+      "true_fx": "BD2",
+      "pred_label": 6,
+      "pred_fx": "MGS",
+      "count": 93
+    },
+    {
+      "true_label": 10,
+      "true_fx": "SD1",
+      "pred_label": 0,
+      "pred_fx": "808",
+      "count": 82
+    },
+    {
+      "true_label": 10,
+      "true_fx": "SD1",
+      "pred_label": 6,
+      "pred_fx": "MGS",
+      "count": 69
+    },
+    {
+      "true_label": 1,
+      "true_fx": "BD2",
+      "pred_label": 9,
+      "pred_fx": "RBM",
+      "count": 56
+    },
+    {
+      "true_label": 6,
+      "true_fx": "MGS",
+      "pred_label": 10,
+      "pred_fx": "SD1",
+      "count": 56
+    },
+    {
+      "true_label": 8,
+      "true_fx": "RAT",
+      "pred_label": 3,
+      "pred_fx": "DPL",
+      "count": 54
+    },
+    {
+      "true_label": 6,
+      "true_fx": "MGS",
+      "pred_label": 7,
+      "pred_fx": "OD1",
+      "count": 49
+    }
+  ]
+}

@@ -1,0 +1,80 @@
+top5_name,count,fraction
+Music,1199,0.922308
+Synthesizer,844,0.649231
+Musical instrument,694,0.533846
+Sound effect,504,0.387692
+"Air horn, truck horn",496,0.381538
+Keyboard (musical),362,0.278462
+Electronic tuner,243,0.186923
+Sampler,227,0.174615
+Effects unit,218,0.167692
+"Vehicle horn, car horn, honking",214,0.164615
+Guitar,178,0.136923
+Distortion,157,0.120769
+Noise,127,0.097692
+Vehicle,103,0.079231
+Plucked string instrument,96,0.073846
+Sine wave,95,0.073077
+Electric piano,86,0.066154
+"Inside, small room",80,0.061538
+Train,77,0.059231
+Cacophony,68,0.052308
+Siren,49,0.037692
+Piano,44,0.033846
+Rail transport,23,0.017692
+Alarm,23,0.017692
+Electric guitar,22,0.016923
+Boing,22,0.016923
+Chirp tone,22,0.016923
+Foghorn,19,0.014615
+Fire alarm,16,0.012308
+Car alarm,15,0.011538
+Ping,15,0.011538
+Civil defense siren,12,0.009231
+Buzzer,10,0.007692
+Bicycle bell,10,0.007692
+"Railroad car, train wagon",9,0.006923
+Brass instrument,8,0.006154
+"Outside, rural or natural",7,0.005385
+Train horn,6,0.004615
+Busy signal,6,0.004615
+Plop,5,0.003846
+Chorus effect,5,0.003846
+Echo,5,0.003846
+Wind,5,0.003846
+Explosion,5,0.003846
+Ship,4,0.003077
+Sidetone,4,0.003077
+Tapping (guitar technique),4,0.003077
+"Wind instrument, woodwind instrument",4,0.003077
+French horn,4,0.003077
+"Beep, bleep",3,0.002308
+Eruption,3,0.002308
+Static,3,0.002308
+Mains hum,3,0.002308
+Timpani,3,0.002308
+Trombone,2,0.001538
+Church bell,2,0.001538
+Ambulance (siren),2,0.001538
+Hum,2,0.001538
+Wind noise (microphone),2,0.001538
+"Electric shaver, electric razor",2,0.001538
+Truck,2,0.001538
+Pizzicato,2,0.001538
+Didgeridoo,2,0.001538
+Throbbing,1,0.000769
+"Gunshot, gunfire",1,0.000769
+Reverberation,1,0.000769
+Clang,1,0.000769
+Trumpet,1,0.000769
+Theremin,1,0.000769
+Bagpipes,1,0.000769
+Toot,1,0.000769
+Shofar,1,0.000769
+Harmonic,1,0.000769
+Dial tone,1,0.000769
+Sitar,1,0.000769
+Ding,1,0.000769
+"Smoke detector, smoke alarm",1,0.000769
+Heavy metal,1,0.000769
+Bell,1,0.000769
