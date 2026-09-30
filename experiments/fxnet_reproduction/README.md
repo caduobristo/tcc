@@ -28,6 +28,8 @@ Também existem avaliações posteriores de checkpoints nos quatro subconjuntos 
 
 Os notebooks esperam o diretório de trabalho `gfx-classifier/src/`, datasets em `../../data/GUITAR-FX` ou `../../data/GUITAR-FX-DIST` e modelos em `../../models_and_results/models`.
 
+Esses são os caminhos dos notebooks históricos. A organização atual é descrita em [data/README.md](../../data/README.md): WAVs em `data/raw/guitar_fx_dist/` e features originais em `data/processed/guitar_fx_dist/baseline/`. O avaliador `evaluate_fxnet_model.py` já usa a localização central das features e mantém `--dataset-root` para substituí-la. Antes de retomar o pipeline histórico, restaure as features originais e ajuste as variáveis de caminho dos notebooks. Não use mel16/mel32 como substitutos: essas matrizes têm 198 quadros e não são compatíveis com a FxNet preservada.
+
 O ambiente histórico foi preparado com Miniconda no Windows. As dependências originais estão em `gfx-classifier/src/requirements.txt`; versões antigas podem exigir adaptações para GPUs e versões recentes de Python/PyTorch. Os scripts `.cmd` e `.ps1` em `gfx-classifier/` usam o ambiente local `.conda/envs/gfx-classifier`.
 
 ```powershell

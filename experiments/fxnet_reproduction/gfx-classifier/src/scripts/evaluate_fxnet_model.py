@@ -21,6 +21,11 @@ SCRIPT_PATH = Path(__file__).resolve()
 SRC_ROOT = SCRIPT_PATH.parents[1]
 REPO_ROOT = SCRIPT_PATH.parents[2]
 WORKSPACE_ROOT = REPO_ROOT.parent
+PROJECT_ROOT = SCRIPT_PATH.parents[5]
+sys.path.insert(0, str(PROJECT_ROOT))
+from src.data.paths import guitar_fx_root
+
+BASELINE_FEATURES_ROOT = guitar_fx_root("baseline")
 
 if str(SRC_ROOT) not in sys.path:
     sys.path.insert(0, str(SRC_ROOT))
@@ -32,19 +37,19 @@ import utils  # noqa: E402
 
 KNOWN_MODELS = {
     "20201024_fxnet_mono_cont_best": {
-        "dataset_root": WORKSPACE_ROOT / "data" / "GUITAR-FX" / "Mono_Continuous" / "Features",
+        "dataset_root": BASELINE_FEATURES_ROOT / "Mono_Continuous" / "Features",
         "exclude_folders": ["MT2"],
     },
     "20201025_fxnet_poly_cont_best": {
-        "dataset_root": WORKSPACE_ROOT / "data" / "GUITAR-FX" / "Poly_Continuous" / "Features",
+        "dataset_root": BASELINE_FEATURES_ROOT / "Poly_Continuous" / "Features",
         "exclude_folders": ["MT2"],
     },
     "20201210_fxnet_mono_disc_noTS9_best": {
-        "dataset_root": WORKSPACE_ROOT / "data" / "GUITAR-FX" / "Mono_Discrete" / "Features",
+        "dataset_root": BASELINE_FEATURES_ROOT / "Mono_Discrete" / "Features",
         "exclude_folders": ["TS9", "MT2"],
     },
     "20201211_fxnet_poly_disc_noTS9_best": {
-        "dataset_root": WORKSPACE_ROOT / "data" / "GUITAR-FX" / "Poly_Discrete" / "Features",
+        "dataset_root": BASELINE_FEATURES_ROOT / "Poly_Discrete" / "Features",
         "exclude_folders": ["TS9", "MT2"],
     },
 }

@@ -37,7 +37,7 @@ python experiments/audiomae/scripts/extract_audiomae_guitarfx_embeddings.py --he
 python experiments/audiomae/scripts/run_audiomae_guitarfx_four_datasets.py --help
 ```
 
-Os caminhos padrão são derivados da localização dos scripts: `ckpt/finetuned.pth` neste experimento e `../fxnet_reproduction/data/GUITAR-FX` para os áudios. É possível passar `--guitarfx-root`, `--checkpoint` e `--output-dir` para usar outros caminhos.
+O checkpoint padrão é `ckpt/finetuned.pth` neste experimento. Os áudios passam a ser procurados em `data/raw/guitar_fx_dist/` na raiz do TCC, conforme [o catálogo de dados](../../data/README.md). `TCC_DATA_ROOT` permite usar outra unidade. Os WAVs usados nas execuções históricas não foram encontrados na auditoria de 30/09/2026; os ZIPs mel16/mel32 contêm espectrogramas e não substituem esses áudios. As opções `--guitarfx-root`/`--dataset-audio`, `--checkpoint` e `--output-dir` continuam disponíveis.
 
 Abra os notebooks a partir de `experiments/audiomae/notebooks` ou `experiments/audiomae`. Os checkpoints oficiais devem ser obtidos conforme as instruções do repositório de origem; não são distribuídos neste TCC.
 

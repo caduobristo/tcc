@@ -5,7 +5,10 @@ import sys
 from pathlib import Path
 
 EXPERIMENT_ROOT = Path(__file__).resolve().parents[1]
-GUITARFX_ROOT = EXPERIMENT_ROOT.parent / "fxnet_reproduction" / "data" / "GUITAR-FX"
+sys.path.insert(0, str(EXPERIMENT_ROOT.parents[1]))
+from src.data.paths import guitar_fx_root
+
+GUITARFX_ROOT = guitar_fx_root("raw")
 
 import matplotlib.pyplot as plt
 import numpy as np
