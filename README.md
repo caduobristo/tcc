@@ -184,10 +184,12 @@ Os experimentos incluem código, documentação, licenças e resultados resumido
 
 ## 12. Organização dos dados locais
 
-O [catálogo de dados](data/README.md) define caminhos comuns para arquivos originais, representações processadas, metadados e auditorias. O [inventário de 30/09/2026](docs/data_inventory.md) cruza os dados disponíveis com o baseline e os experimentos. Os ZIPs mel16/mel32 são variantes processadas distintas das features originais da FxNet; o inventário registra a integridade e as lacunas para repetir cada execução.
+Dados, metadados, caches e auditorias permanecem locais em `data/` e `results/transfer_learning/`. O [protocolo de consolidação](docs/transfer_learning_consolidation.md) registra os caminhos e pré-requisitos do cenário Mono Discrete. Os ZIPs mel16/mel32 são variantes processadas distintas das features originais da FxNet e dos frontends nativos dos novos modelos.
 
 ## 13. Transfer learning com encoder congelado
 
 Os notebooks [PaSST](notebooks/train_passt.ipynb) e [HTS-AT](notebooks/train_htsat.ipynb) preparam o primeiro experimento no Mono Discrete, usando WAVs originais, processamento nativo de cada checkpoint e as mesmas partições por gravação de origem. A extração completa de embeddings e o treinamento da nova cabeça ficam desativados por padrão. Não há fine-tuning nesta etapa.
 
-O [guia de preparação](docs/transfer_learning_setup.md) descreve ambiente, dados, pesos, controles de execução e estimativa de tempo nesta máquina. Dados e artefatos de execução permanecem locais.
+A etapa congelada no Mono Discrete foi consolidada em **01/10/2026**: oito configurações por modelo, confirmação das duas finalistas pela validação e cinco seeds novas para a avaliação final. F1 macro de teste: **PaSST 82,22 ± 0,18%** e **HTS-AT 90,49 ± 0,09%**. Esses desvios medem variação entre seeds na mesma divisão por fonte; o teste já havia sido consultado na rodada inicial. Não houve fine-tuning.
+
+O [relatório consolidado](results/transfer_learning_consolidated_report.md) registra seleção, métricas por classe, épocas, tempos e limites da comparação; o [protocolo](docs/transfer_learning_consolidation.md) explica como repetir a etapa. O [notebook de consulta](notebooks/consolidate_transfer_learning.ipynb) lê os resultados sem iniciar novo treinamento. Código, configurações e resumos são versionados; áudios, embeddings, pesos e predições individuais permanecem locais.
