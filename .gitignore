@@ -251,3 +251,22 @@ __marimo__/
 # Pesos locais dos experimentos de transfer learning
 /checkpoints/pretrained_models/
 /checkpoints/best_ast*.pt
+
+# Documentacao e contexto para IA permanecem locais
+*.[mM][dD]
+*.markdown
+*.MARKDOWN
+/docs/
+/data/catalog.json
+/AGENTS.md
+/CONTEXTO_CHATGPT.local.md
+/CLAUDE.md
+/GEMINI.md
+/.cursorrules
+/.codex/
+/.claude/
+/.agents/
+/.cursor/rules/
+/.windsurfrules
+/.github/instructions/
+/.github/copilot-instructions.md
