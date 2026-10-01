@@ -252,16 +252,14 @@ __marimo__/
 /checkpoints/pretrained_models/
 /checkpoints/best_ast*.pt
 
-# Documentacao e contexto para IA permanecem locais
-*.[mM][dD]
-*.markdown
-*.MARKDOWN
+# Pasta docs e contexto para IA permanecem locais; READMEs/relatorios sao versionados
 /docs/
-/data/catalog.json
-/AGENTS.md
-/CONTEXTO_CHATGPT.local.md
-/CLAUDE.md
-/GEMINI.md
+AGENTS.md
+AGENTS.override.md
+CONTEXTO_CHATGPT*.md
+CLAUDE.md
+GEMINI.md
+*.local.md
 /.cursorrules
 /.codex/
 /.claude/
