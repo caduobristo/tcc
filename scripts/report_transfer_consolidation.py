@@ -68,7 +68,7 @@ def report(session):
     lines += ['', 'Média ± desvio padrão amostral de cinco seeds novas (101, 202, 303, 404 e 505). Cada seed é avaliada nos mesmos 24.948 áudios; não são 124.740 exemplos independentes.',
               '', '## Seleção e execuções', '',
               'Oito configurações por modelo foram comparadas usando F1 macro de validação. As duas melhores receberam mais duas seeds; a configuração foi escolhida pela média nas seeds 42, 7 e 21. A seleção foi registrada antes dos dez treinamentos finais, e todas as cabeças foram finalizadas antes de avaliar o teste.',
-              '', 'AdamW: LR inicial 0,001, weight decay 0,01; teto de 200 épocas; scheduler e parada antecipada na validação. Consulte [o protocolo](../docs/transfer_learning_consolidation.md) e [a configuração](../configs/linear_probe/consolidation_mono_disc.json).']
+              '', 'AdamW: LR inicial 0,001, weight decay 0,01; teto de 200 épocas; scheduler e parada antecipada na validação. Protocolo local: `docs/transfer_learning_consolidation.md` (fora do Git). Consulte [a configuração](../configs/linear_probe/consolidation_mono_disc.json).']
     for model,records in summary['final_runs'].items():
         config = load_config(ROOT/'configs/linear_probe'/f'{model}_mono_disc.json')
         cache = validate_cache(config)
