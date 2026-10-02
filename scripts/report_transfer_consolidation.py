@@ -219,9 +219,9 @@ def report(session):
         public['waveform_inference_check'] = read_json(waveform_check)
         lines += ['', 'O carregador de inferência também foi conferido em 16 WAVs originais por modelo (primeiro batch do manifest): logits finitos e idênticos aos obtidos com o cache, com diferença máxima zero. Essa conferência valida o reuso do pipeline, não uma nova estimativa de desempenho.']
     write_json(session/'verification.json',verified)
-    write_json(ROOT/'results'/public_summary_name,public)
+    write_json(ROOT/'results/passt_htsat_transfer'/public_summary_name,public)
     content = '\n'.join(lines)+'\n'
-    (ROOT/'results'/public_report_name).write_text(content,encoding='utf-8')
+    (ROOT/'results/passt_htsat_transfer'/public_report_name).write_text(content,encoding='utf-8')
     local_content = content.replace('../docs/','../../../../docs/').replace('../configs/','../../../../configs/')
     local_content = local_content.replace(f']({public_summary_name})',f'](../../../{public_summary_name})')
     (session/'report.md').write_text(local_content,encoding='utf-8')

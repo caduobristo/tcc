@@ -20,7 +20,7 @@ def main():
              '| --- | --- | ---: | ---: | ---: | ---: |']
     for scenario in ('mono_disc','mono_cont','poly_disc','poly_cont'):
         stem = 'transfer_learning_consolidated' if scenario=='mono_disc' else f'transfer_learning_{scenario}_consolidated'
-        report = json.loads((ROOT/'results'/(stem+'_summary.json')).read_text(encoding='utf-8'))
+        report = json.loads((ROOT/'results/passt_htsat_transfer'/(stem+'_summary.json')).read_text(encoding='utf-8'))
         if not report['all_predictions_reproduced'] or report['scenario']!=scenario or report['fine_tuning']:
             raise ValueError('A scenario report lacks completed verification')
         expected = {(model,seed) for model in ('passt','htsat') for seed in (101,202,303,404,505)}
@@ -69,8 +69,8 @@ def main():
               '', 'Mono Discrete teve teste consultado na rodada preliminar. Nos outros três cenários, este protocolo não fez rodada preliminar nem usou métricas de teste na seleção. Há resultados históricos de outros modelos nestes conjuntos, portanto não são fontes externas inéditas ao projeto. O DP entre seeds mede variação do treinamento, não variação entre partições. Contínuo/discreto podem compartilhar fontes dentro da família mono/poly; os resultados são de treinamentos separados, sem afirmar transferência entre cenários.',
               '', 'O baseline FxNet histórico usa divisão por arquivo e outro frontend. Comparações com ele são descritivas e não equivalem a uma comparação controlada. Não houve fine-tuning nem treino dos encoders.',
               '', 'Código, protocolos, notebooks e resumos estão no Git. Dados, embeddings, checkpoints, logs completos e documentação de contexto permanecem locais. Consulta: `notebooks/transfer_learning_all_scenarios.ipynb`, com execução desabilitada por padrão. Inferência: `src.models.consolidated_probe.load_consolidated_probe`, carregando obrigatoriamente o scaler salvo junto à cabeça.']
-    (ROOT/'results/transfer_learning_all_scenarios_report.md').write_text('\n'.join(lines)+'\n',encoding='utf-8')
-    (ROOT/'results/transfer_learning_all_scenarios_summary.json').write_text(json.dumps(combined,indent=2,ensure_ascii=False)+'\n',encoding='utf-8')
+    (ROOT/'results/passt_htsat_transfer/transfer_learning_all_scenarios_report.md').write_text('\n'.join(lines)+'\n',encoding='utf-8')
+    (ROOT/'results/passt_htsat_transfer/transfer_learning_all_scenarios_summary.json').write_text(json.dumps(combined,indent=2,ensure_ascii=False)+'\n',encoding='utf-8')
     print('ALL_SCENARIOS_REPORT_COMPLETE')
 
 
