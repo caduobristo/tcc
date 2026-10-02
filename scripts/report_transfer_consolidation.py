@@ -16,7 +16,8 @@ import numpy as np
 import torch
 from torch import nn
 
-from src.data.transfer import EFFECTS, read_manifest, sha256
+from src.data.transfer import EFFECTS, read_manifest, manifest_path, sha256
+from src.data.paths import SCENARIOS
 from src.training.consolidation import evaluate, write_json
 from src.training.linear_probe import load_config, validate_cache, paths_for, device_for
 
@@ -42,35 +43,46 @@ def report(session):
         raise ValueError('Selection lock changed')
     heads_lock = read_json(session/'all_confirmation_heads_locked.json')
     selection_lock = read_json(session/'selection_locked.json')
-    rows = read_manifest()
+    scenario = summary['protocol']['scenario']
+    rows = read_manifest(scenario)
+    manifest = read_json(manifest_path(scenario).with_suffix('.json'))
+    if sha256(manifest_path(scenario)) != protocol['manifest_sha256']:
+        raise ValueError('Audited manifest changed')
+    name = SCENARIOS[scenario].replace('_',' ')
+    scenario_name = name
+    stem = 'transfer_learning_consolidated' if scenario=='mono_disc' else f'transfer_learning_{scenario}_consolidated'
+    public_summary_name = stem+'_summary.json'
+    public_report_name = stem+'_report.md'
     indices = np.asarray([i for i,row in enumerate(rows) if row['split']=='test'])
     truth = np.asarray([int(rows[i]['label']) for i in indices])
     verified = []
-    public = {'schema':1,'scenario':'mono_disc','split_seed':42,'samples':len(rows),
-              'source_groups':624,'test_source_groups':126,'split_counts':{'train':88902,'validation':9702,'test':len(indices)},
+    public = {'schema':1,'scenario':scenario,'split_seed':42,'samples':len(rows),
+              'source_groups':manifest['source_groups'],'test_source_groups':manifest['group_counts']['test'],
+              'split_counts':manifest['split_counts'],'group_counts':manifest['group_counts'],
+              'duplicate_wav_rows':manifest['duplicate_wav_rows'],'identical_wav_leakage':manifest['identical_wav_leakage'],
               'session':summary['session'],'protocol':summary['protocol'],'protocol_sha256':protocol['protocol_sha256'],
               'implementation_sha256':protocol['implementation_sha256'],
               'manifest_sha256':protocol['manifest_sha256'],'selection_lock_sha256':summary['selection_lock_sha256'],
               'started_at_utc':protocol['started_at_utc'],'completed_at_utc':summary['completed_at_utc'],
               'elapsed_seconds':summary['elapsed_seconds'],'encoder_frozen':True,'fine_tuning':False,
-              'test_previously_inspected':True,'std_interpretation':'sample std between training seeds on the same source-group split',
+              'test_previously_inspected':summary['protocol']['historical_test_already_inspected'],'std_interpretation':'sample std between training seeds on the same source-group split',
               'hardware':protocol['hardware'],'models':{}}
-    first = read_json(ROOT/'results/transfer_learning/mono_disc/first_run_summary.json')
+    first = read_json(ROOT/'results/transfer_learning/mono_disc/first_run_summary.json') if scenario=='mono_disc' else None
     execution_date = datetime.fromisoformat(protocol['started_at_utc']).astimezone(timezone(timedelta(hours=-3))).strftime('%d/%m/%Y')
-    lines = ['# Transfer learning consolidado: PaSST e HTS-AT','',
+    lines = [f'# Transfer learning consolidado: PaSST e HTS-AT — {name}','',
              f'Execução em {execution_date}, com encoders congelados. Fine-tuning não foi realizado.',
              '',f'Sessão local: `{summary["session"]}`. Duração do protocolo: **{summary["elapsed_seconds"]/60:.2f} minutos**, reutilizando os embeddings já extraídos.',
-             '', '123.552 áudios Mono Discrete/13 efeitos; 624 fontes; treino/validação/teste 88.902/9.702/24.948 por fonte (seed 42). WAVs a 32 kHz com frontend nativo, não os mel32 Kaldi.',
+             '', f'{len(rows):,} áudios {name}/13 efeitos; {manifest["source_groups"]} fontes; treino/validação/teste {manifest["split_counts"]["train"]:,}/{manifest["split_counts"]["validation"]:,}/{len(indices):,} por fonte (seed 42). WAVs a 32 kHz com frontend nativo, não os mel32 Kaldi.',
              '', '## Resultado no teste', '', '| Modelo | Acurácia (%) | F1 macro (%) | Precisão macro (%) | Recall macro (%) |',
              '| --- | ---: | ---: | ---: | ---: |']
     for model,aggregates in summary['aggregate'].items():
         lines.append('| '+('PaSST' if model=='passt' else 'HTS-AT')+' | '+' | '.join(mean_std(aggregates[key]) for key in ('accuracy','macro_f1','macro_precision','macro_recall'))+' |')
-    lines += ['', 'Média ± desvio padrão amostral de cinco seeds novas (101, 202, 303, 404 e 505). Cada seed é avaliada nos mesmos 24.948 áudios; não são 124.740 exemplos independentes.',
+    lines += ['', f'Média ± desvio padrão amostral de cinco seeds novas (101, 202, 303, 404 e 505). Cada seed é avaliada nos mesmos {len(indices):,} áudios; as cinco avaliações não são novos exemplos independentes.',
               '', '## Seleção e execuções', '',
               'Oito configurações por modelo foram comparadas usando F1 macro de validação. As duas melhores receberam mais duas seeds; a configuração foi escolhida pela média nas seeds 42, 7 e 21. A seleção foi registrada antes dos dez treinamentos finais, e todas as cabeças foram finalizadas antes de avaliar o teste.',
-              '', 'AdamW: LR inicial 0,001, weight decay 0,01; teto de 200 épocas; scheduler e parada antecipada na validação. Protocolo local: `docs/transfer_learning_consolidation.md` (fora do Git). Consulte [a configuração](../configs/linear_probe/consolidation_mono_disc.json).']
+              '', f'AdamW: LR inicial 0,001, weight decay 0,01; teto de 200 épocas; scheduler e parada antecipada na validação. Protocolo local: `docs/transfer_learning_all_scenarios.md` (fora do Git). Consulte [a configuração](../configs/linear_probe/consolidation_{scenario}.json).']
     for model,records in summary['final_runs'].items():
-        config = load_config(ROOT/'configs/linear_probe'/f'{model}_mono_disc.json')
+        config = load_config(ROOT/'configs/linear_probe'/f'{model}_{scenario}.json')
         cache = validate_cache(config)
         _,vectors,_ = paths_for(config)
         array = np.load(vectors,mmap_mode='r',allow_pickle=False)
@@ -89,10 +101,12 @@ def report(session):
                       'aggregate':summary['aggregate'][model],'representative_seed_by_validation':representative['training_seed'],
                       'representative_run':representative['folder'],'embedding_sha256':cache['sha256'],
                       'cache_identity':cache['identity'],
-                      'initial_run':{key:first['models'][model][key] for key in ('accuracy','macro_f1','training_and_test_seconds')},
+                      'embedding_extraction_seconds':cache['elapsed_seconds'],
                       'search':[{key:group[key] for key in ('candidate_id','mean_validation_macro_f1')} for group in search],
                       'final_runs':[], 'per_class':{}}
         name = 'PaSST' if model=='passt' else 'HTS-AT'
+        if first is not None:
+            model_info['initial_run'] = {key:first['models'][model][key] for key in ('accuracy','macro_f1','training_and_test_seconds')}
         lines += ['',f'### {name}', '',f'Configuração escolhida: `{selected["candidate_id"]}`. F1 macro de validação nas três seeds: **{percent(selected["mean_validation_macro_f1"])} ± {percent(selected["std_validation_macro_f1"])}%**.',
                   '', '| Configuração da busca | F1 macro validação, seed 42 (%) | Melhor época | Épocas executadas |',
                   '| --- | ---: | ---: | ---: |']
@@ -140,8 +154,8 @@ def report(session):
             epochs = [h['epoch'] for h in history]
             axes[0].plot(epochs,[h['validation_macro_f1'] for h in history],label=str(saved['training_seed']))
             axes[1].plot(epochs,[h['train_loss'] for h in history],label=str(saved['training_seed']))
-        axes[0].set(title=f'{name}: validation macro F1',xlabel='Epoch',ylabel='F1')
-        axes[1].set(title=f'{name}: training loss',xlabel='Epoch',ylabel='Cross entropy')
+        axes[0].set(title=f'{name} — {scenario_name}: validation macro F1',xlabel='Epoch',ylabel='F1')
+        axes[1].set(title=f'{name} — {scenario_name}: training loss',xlabel='Epoch',ylabel='Cross entropy')
         for ax in axes:
             ax.grid(alpha=.2)
             ax.legend(title='Seed',fontsize=8)
@@ -153,7 +167,7 @@ def report(session):
         figure,ax = plt.subplots(figsize=(10,8))
         im = ax.imshow(normalized,vmin=0,vmax=1,cmap='Blues')
         ax.set(xticks=np.arange(13),yticks=np.arange(13),xticklabels=EFFECTS,yticklabels=EFFECTS,
-               xlabel='Predicted effect',ylabel='True effect',title=f'{name}: mean row-normalized test confusion, 5 seeds')
+               xlabel='Predicted effect',ylabel='True effect',title=f'{name} — {scenario_name}: mean test confusion, 5 seeds')
         for i in range(13):
             for j in range(13):
                 ax.text(j,i,f'{100*normalized[i,j]:.0f}',ha='center',va='center',fontsize=7,
@@ -183,17 +197,21 @@ def report(session):
         p,h = [public['models'][m]['per_class'][effect] for m in ('passt','htsat')]
         lines.append(f'| {effect} | {p["support_per_seed"]} | {mean_std(p["f1"])} | {mean_std(p["recall"])} | {mean_std(h["f1"])} | {mean_std(h["recall"])} |')
     lines += ['', '## Comparação descritiva e limites', '']
-    for model in ('passt','htsat'):
-        old,new = first['models'][model],summary['aggregate'][model]
-        delta = 100*(new['macro_f1']['mean']-old['macro_f1'])
-        od1 = public['models'][model]['per_class']['OD1']['recall']['mean']
-        lines.append(f'- {model}: F1 macro inicial {percent(old["macro_f1"])}%; agora {percent(new["macro_f1"]["mean"])}%, diferença de {delta:.2f} pontos percentuais. Recall OD1 inicial {percent(old["per_class"]["OD1"]["recall"])}%; agora {percent(od1)}%.')
-    lines += ['', 'A primeira rodada tinha uma seed, dez épocas, seleção por acurácia e não demonstrou convergência. A consolidação muda duração, critério e possivelmente scaler/batch/pesos; não atribuir todo ganho a um único ajuste.',
-              '', '**O teste já foi consultado anteriormente.** A escolha nesta consolidação usa somente validação, mas não equivale a um teste totalmente cego. O DP é entre seeds de treinamento na mesma partição; não mede generalização entre novas fontes. Esta etapa não reproduz exatamente o AST e não estabelece superioridade geral de uma arquitetura.',
+    if first is not None:
+        for model in ('passt','htsat'):
+            old,new = first['models'][model],summary['aggregate'][model]
+            delta = 100*(new['macro_f1']['mean']-old['macro_f1'])
+            lines.append(f'- {model}: F1 macro inicial {percent(old["macro_f1"])}%; agora {percent(new["macro_f1"]["mean"])}%, diferença de {delta:.2f} pontos percentuais.')
+        lines += ['', 'A rodada inicial tinha uma seed e dez épocas; duração, critério e pré-processamento mudaram na consolidação.']
+    if public['test_previously_inspected']:
+        lines += ['', '**O teste já foi consultado anteriormente.** A escolha nesta consolidação usa somente validação, mas não equivale a um teste totalmente cego.']
+    else:
+        lines += ['', 'Não houve rodada preliminar de dez épocas neste cenário. A seleção usou somente validação, e o teste deste protocolo foi avaliado somente após o registro de todas as dez cabeças finais. Existem resultados históricos de outros modelos neste cenário; esta declaração não afirma um holdout externo ao projeto inteiro.']
+    lines += ['', 'O DP é entre seeds de treinamento na mesma partição; não mede generalização entre novas fontes. Os cenários contínuo/discreto podem compartilhar fontes dentro da mesma família mono/poly. Aqui cada cenário tem sua própria cabeça e avaliação, sem treinar entre cenários. A comparação com o baseline histórico é descritiva: ele usa divisão por arquivo e outro frontend.',
               '', '## Integridade e reuso', '',
               f'As dez cabeças foram recarregadas e suas predições reproduziram exatamente os arquivos salvos ({len(indices)} por cabeça). Hashes dos heads/scalers/caches, ausência de métricas de teste na seleção e ordem dos registros de seleção/treino/teste foram conferidos.',
-              '', 'O resumo portátil está em [transfer_learning_consolidated_summary.json](transfer_learning_consolidated_summary.json). Dados, embeddings, checkpoints, predições por arquivo e gráficos permanecem locais e ignorados pelo Git.',
-              '', 'Para consultar sem treinar: `notebooks/consolidate_transfer_learning.ipynb`. Para inferência com WAVs mono já reamostrados/cortados para 32 kHz/64.000 amostras, use `src.models.consolidated_probe.load_consolidated_probe`, passando o diretório da execução e dispositivo CUDA. A precisão BF16 do encoder é preservada; saída são logits das 13 classes na ordem de `src.data.transfer.EFFECTS`.']
+              '', f'O resumo portátil está em [{public_summary_name}]({public_summary_name}). Dados, embeddings, checkpoints, predições por arquivo e gráficos permanecem locais e ignorados pelo Git.',
+              '', 'Para consultar sem treinar: `notebooks/transfer_learning_all_scenarios.ipynb`. Para inferência com WAVs mono já reamostrados/cortados para 32 kHz/64.000 amostras, use `src.models.consolidated_probe.load_consolidated_probe`, passando o diretório da execução e dispositivo CUDA. Carregar a cabeça junto ao scaler salvo.']
     public['verification'] = verified
     public['all_predictions_reproduced'] = True
     waveform_check = session/'waveform_inference_check.json'
@@ -201,11 +219,11 @@ def report(session):
         public['waveform_inference_check'] = read_json(waveform_check)
         lines += ['', 'O carregador de inferência também foi conferido em 16 WAVs originais por modelo (primeiro batch do manifest): logits finitos e idênticos aos obtidos com o cache, com diferença máxima zero. Essa conferência valida o reuso do pipeline, não uma nova estimativa de desempenho.']
     write_json(session/'verification.json',verified)
-    write_json(ROOT/'results/transfer_learning_consolidated_summary.json',public)
+    write_json(ROOT/'results'/public_summary_name,public)
     content = '\n'.join(lines)+'\n'
-    (ROOT/'results/transfer_learning_consolidated_report.md').write_text(content,encoding='utf-8')
+    (ROOT/'results'/public_report_name).write_text(content,encoding='utf-8')
     local_content = content.replace('../docs/','../../../../docs/').replace('../configs/','../../../../configs/')
-    local_content = local_content.replace('](transfer_learning_consolidated_summary.json)','](../../../transfer_learning_consolidated_summary.json)')
+    local_content = local_content.replace(f']({public_summary_name})',f'](../../../{public_summary_name})')
     (session/'report.md').write_text(local_content,encoding='utf-8')
     print('REPORT_COMPLETE',session,'Verified heads:',len(verified))
     return public

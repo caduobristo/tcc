@@ -1,0 +1,12 @@
+{
+  "model": "passt",
+  "scenario": "poly_disc",
+  "seed": 42,
+  "sample_rate": 32000,
+  "clip_seconds": 2,
+  "device": "auto",
+  "train_encoder": false,
+  "amp_bfloat16": true,
+  "embedding_batch_size": 16,
+  "num_workers": 4
+}

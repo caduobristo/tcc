@@ -137,12 +137,10 @@ Até o momento, o projeto encontra-se nas seguintes etapas:
 - Estudo detalhado de modelos como AST, PaSST, HTS-AT e AudioMAE, incluindo suas estratégias de treinamento e representação  
 - Definição do pipeline experimental, contemplando pré-processamento, modelagem e avaliação  
 - Reprodução de experimentos da literatura, validando resultados reportados e consolidando o ambiente experimental  
+- Implementação de transfer learning com PaSST e HTS-AT congelados e treinamento de cabeças lineares para as 13 classes de efeitos; protocolos e resultados na seção 13
 
 Como próximos passos, destacam-se:
 
-- Aplicação de **transfer learning** a partir de modelos pré-treinados (ex: AudioSet), adaptando-os ao domínio específico de efeitos de guitarra  
-- Substituição da camada de classificação original por uma **rede fully connected** ajustada ao novo conjunto de classes (timbres/efeitos), em substituição às categorias genéricas utilizadas nos datasets originais  
-- Treinamento supervisionado dessa nova camada de classificação, mantendo o backbone do Transformer congelado (feature extractor)  
 - Realização de **fine-tuning parcial ou total** dos modelos, visando adaptação mais profunda ao domínio do problema  
 - Investigação da viabilidade de **treinamento de modelos baseados em Transformers do zero**, considerando disponibilidade de dados e custo computacional  
 - Expansão e organização do dataset, incluindo possíveis estratégias de geração de dados sintéticos  
@@ -188,8 +186,21 @@ Dados, metadados, caches e auditorias permanecem locais em `data/` e `results/tr
 
 ## 13. Transfer learning com encoder congelado
 
-Os notebooks [PaSST](notebooks/train_passt.ipynb) e [HTS-AT](notebooks/train_htsat.ipynb) preparam o primeiro experimento no Mono Discrete, usando WAVs originais, processamento nativo de cada checkpoint e as mesmas partições por gravação de origem. A extração completa de embeddings e o treinamento da nova cabeça ficam desativados por padrão. Não há fine-tuning nesta etapa.
+PaSST e HTS-AT foram consolidados nos quatro cenários GUITAR-FX-DIST: **Mono Discrete, Mono Continuous, Poly Discrete e Poly Continuous**, em 01–02/10/2026. Cada cenário tem sua própria cabeça linear de 9.997 parâmetros; os encoders pré-treinados permanecem congelados. Os WAVs oficiais são reamostrados para 32 kHz e passam pelo frontend nativo de cada checkpoint. Os ZIPs mel16/mel32 Kaldi da dupla não foram usados nesta etapa.
 
-A etapa congelada no Mono Discrete foi consolidada em **01/10/2026**: oito configurações por modelo, confirmação das duas finalistas pela validação e cinco seeds novas para a avaliação final. F1 macro de teste: **PaSST 82,22 ± 0,18%** e **HTS-AT 90,49 ± 0,09%**. Esses desvios medem variação entre seeds na mesma divisão por fonte; o teste já havia sido consultado na rodada inicial. Não houve fine-tuning.
+O [relatório dos quatro cenários](results/transfer_learning_all_scenarios_report.md) e o [resumo JSON](results/transfer_learning_all_scenarios_summary.json) reúnem acurácia, F1, precisão e recall macro, tempos, integridade e links para as métricas por classe. O [notebook de consulta](notebooks/transfer_learning_all_scenarios.ipynb) apresenta as oito combinações modelo/cenário sem iniciar novo treinamento; `RUN_ADDITIONAL_TRANSFER=False` é o padrão. O [relatório original Mono Discrete](results/transfer_learning_consolidated_report.md) e os notebooks [PaSST](notebooks/train_passt.ipynb), [HTS-AT](notebooks/train_htsat.ipynb) e [consolidação Mono Discrete](notebooks/consolidate_transfer_learning.ipynb) foram preservados.
 
-O [relatório consolidado](results/transfer_learning_consolidated_report.md) registra seleção, métricas por classe, épocas, tempos e limites da comparação; o protocolo local em `docs/transfer_learning_consolidation.md` explica como repetir a etapa. O [notebook de consulta](notebooks/consolidate_transfer_learning.ipynb) lê os resultados sem iniciar novo treinamento. Código, configurações e resumos são versionados; áudios, embeddings, pesos e predições individuais permanecem locais.
+O protocolo usa oito configurações por modelo, confirmação das duas finalistas por validação e cinco seeds novas para a avaliação final: 34 treinamentos de cabeça por cenário, **102 novos nos três cenários adicionais**. Scaler e pesos de classe são calculados somente no treino. AdamW, limite de 200 épocas e parada antecipada por F1 macro de validação; configurações em [configs/linear_probe/](configs/linear_probe/). Os desvios medem variação entre seeds na mesma divisão por fonte. Mono Discrete teve o teste consultado na rodada preliminar; os outros três não tiveram rodada preliminar neste protocolo. Não houve fine-tuning.
+
+### Reprodução dos três cenários adicionais
+
+Em uma cópia nova, prepare Python 3.11, 7-Zip e o ambiente CUDA usado pelo projeto. O script `scripts/setup_transfer_environment.ps1` aceita `-Standalone -BasePython <executável Python 3.11>` para instalar o ambiente sem depender da reprodução FxNet local. Depois, na raiz do projeto:
+
+```powershell
+.\.venv-transfer\Scripts\python.exe scripts/prepare_transfer_models.py
+.\.venv-transfer\Scripts\python.exe scripts/run_additional_transfer_learning.py --run --prepare-data
+```
+
+O executor prepara Mono Continuous, Poly Discrete e Poly Continuous em sequência, valida MD5/CRC dos dados e SHA-256 dos WAVs/caches, preserva as partições por fonte e salva os resultados. Ele reutiliza cenários concluídos. Os volumes novos de download ficam na área temporária e são descartados após extração verificada; arquivos previamente existentes são preservados. A preparação confere espaço disponível e mantém reserva de 12 GiB. Os três cenários novos restauram as 13 classes usadas, sem WAVs MT2/NoFX nem features baseline.
+
+Para inferência, use `src.models.consolidated_probe.load_consolidated_probe`, carregando obrigatoriamente a cabeça e seu scaler. Código, protocolos, notebooks e resumos são versionados; áudios, embeddings, pesos, predições individuais e documentação de contexto permanecem locais.

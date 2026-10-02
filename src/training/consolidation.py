@@ -15,6 +15,7 @@ from torch import nn
 from sklearn.metrics import classification_report, confusion_matrix
 
 from src.data.transfer import EFFECTS, read_manifest, manifest_path, sha256
+from src.data.paths import SCENARIOS
 from src.models.transfer import PROJECT_ROOT
 from src.training.linear_probe import load_config, validate_cache, paths_for, device_for, seed_all
 
@@ -32,7 +33,7 @@ def utc_now():
 
 
 def validate_plan(plan):
-    if (plan['schema'] != 1 or plan['scenario'] != 'mono_disc' or plan['split_seed'] != 42
+    if (plan['schema'] != 1 or plan['scenario'] not in SCENARIOS or plan['split_seed'] != 42
             or plan['train_encoder'] or plan['test_used_for_selection']
             or plan['primary_metric'] != 'validation_macro_f1'):
         raise ValueError('Unsupported consolidation protocol')
@@ -99,15 +100,16 @@ class SelectionData:
 
 def load_selection_data(model, plan):
     """Only train/validation rows are made available to candidate training."""
-    config = load_config(PROJECT_ROOT/'configs/linear_probe'/f'{model}_mono_disc.json')
-    report = json.loads(manifest_path().with_suffix('.json').read_text())
-    if (report['seed'] != plan['split_seed'] or plan['scenario'] != 'mono_disc'
-            or report['manifest_sha256'] != sha256(manifest_path()) or report['classes'] != list(EFFECTS)):
+    scenario = plan['scenario']
+    config = load_config(PROJECT_ROOT/'configs/linear_probe'/f'{model}_{scenario}.json')
+    report = json.loads(manifest_path(scenario).with_suffix('.json').read_text())
+    if (report['seed'] != plan['split_seed'] or report['scenario'] != scenario
+            or report['manifest_sha256'] != sha256(manifest_path(scenario)) or report['classes'] != list(EFFECTS)):
         raise ValueError('Consolidation must preserve the original source-group partitions')
     cache = validate_cache(config)
     _, vectors, _ = paths_for(config)
     array = np.load(vectors, mmap_mode='r', allow_pickle=False)
-    rows = read_manifest()
+    rows = read_manifest(scenario)
     group_splits = {}
     for row in rows:
         if int(row['label']) != EFFECTS.index(row['effect']) or row['split'] not in ('train','validation','test'):
@@ -248,11 +250,12 @@ def evaluate_final_run(folder, model, lock, cache):
         raise ValueError('Final checkpoint or training-fitted scaler changed')
     if cache['identity'] != record['cache_identity'] or cache['sha256'] != record['embedding_sha256']:
         raise ValueError('Final evaluation embeddings differ from training')
-    config = load_config(PROJECT_ROOT/'configs/linear_probe'/f'{model}_mono_disc.json')
+    scenario = cache['identity']['scenario']
+    config = load_config(PROJECT_ROOT/'configs/linear_probe'/f'{model}_{scenario}.json')
     device = device_for(config)
     _,path,_ = paths_for(config)
     array = np.load(path,mmap_mode='r',allow_pickle=False)
-    rows = read_manifest()
+    rows = read_manifest(scenario)
     indices = [i for i,row in enumerate(rows) if row['split']=='test']
     x = torch.from_numpy(array[indices].copy()).to(device)
     y = torch.tensor([int(rows[i]['label']) for i in indices],device=device)
@@ -275,21 +278,24 @@ def evaluate_final_run(folder, model, lock, cache):
     return metrics
 
 
-def run_consolidation(plan_path, *, allow_training=False):
+def run_consolidation(plan_path, *, allow_training=False, on_session_started=None):
     if not allow_training:
         raise RuntimeError('Consolidation disabled; explicit authorization is required')
     plan_path = Path(plan_path)
     plan = json.loads(plan_path.read_text())
     validate_plan(plan)
     started = time.perf_counter()
-    session = PROJECT_ROOT/'results/transfer_learning/mono_disc'/('consolidation_'+datetime.now().strftime('%Y%m%d_%H%M%S')+'_'+uuid.uuid4().hex[:6])
+    scenario = plan['scenario']
+    session = PROJECT_ROOT/'results/transfer_learning'/scenario/('consolidation_'+datetime.now().strftime('%Y%m%d_%H%M%S')+'_'+uuid.uuid4().hex[:6])
     session.mkdir(parents=True,exist_ok=False)
     snapshot = {'protocol':plan,'protocol_sha256':sha256(plan_path),'implementation_sha256':sha256(Path(__file__)),
-                'manifest_sha256':sha256(manifest_path()),'started_at_utc':utc_now(),
+                'manifest_sha256':sha256(manifest_path(scenario)),'started_at_utc':utc_now(),
                 'hardware':{'gpu':torch.cuda.get_device_name() if torch.cuda.is_available() else None,
                             'torch':torch.__version__,'device':'cuda' if torch.cuda.is_available() else 'cpu'},
                 'status':'selection','test_used_for_selection':False}
     write_json(session/'protocol.json',snapshot)
+    if on_session_started is not None:
+        on_session_started(session)
     print('CONSOLIDATION_SESSION',session,flush=True)
     selection = {}
     for model in plan['models']:
@@ -337,7 +343,7 @@ def run_consolidation(plan_path, *, allow_training=False):
     snapshot.update(status='final_evaluation')
     write_json(session/'protocol.json',snapshot)
     for model,records in final_records.items():
-        cache = validate_cache(load_config(PROJECT_ROOT/'configs/linear_probe'/f'{model}_mono_disc.json'))
+        cache = validate_cache(load_config(PROJECT_ROOT/'configs/linear_probe'/f'{model}_{scenario}.json'))
         for record in records:
             folder = PROJECT_ROOT/record['folder']
             metrics = evaluate_final_run(folder,model,lock,cache)
