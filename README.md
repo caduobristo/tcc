@@ -176,7 +176,7 @@ As tentativas de reprodução e explorações iniciais estão organizadas em [ex
 - [AudioMAE](experiments/audiomae/README.md): validação do modelo pré-treinado, inferência AudioSet e exploração de embeddings de guitarra.
 - [PaSST](experiments/passt/README.md): extração e análise exploratória de embeddings.
 
-A baseline consolidada possui seu próprio [notebook de treinamento](notebooks/train_baseline.ipynb) e [relatório de resultados](results/baseline_results_report.md). Ela deve ser distinguida das reproduções históricas acima.
+A baseline consolidada possui seu próprio [notebook de treinamento](notebooks/train_baseline.ipynb) e [relatório de resultados](results/baseline/baseline_results_report.md). Ela deve ser distinguida das reproduções históricas acima.
 
 Os experimentos incluem código, documentação, licenças e resultados resumidos. Datasets, ambientes, checkpoints das reproduções e artefatos volumosos devem ser preparados localmente, conforme o README de cada experimento.
 
@@ -188,7 +188,7 @@ Dados, metadados, caches e auditorias permanecem locais em `data/` e `results/tr
 
 PaSST e HTS-AT foram consolidados nos quatro cenários GUITAR-FX-DIST: **Mono Discrete, Mono Continuous, Poly Discrete e Poly Continuous**, em 01–02/10/2026. Cada cenário tem sua própria cabeça linear de 9.997 parâmetros; os encoders pré-treinados permanecem congelados. Os WAVs oficiais são reamostrados para 32 kHz e passam pelo frontend nativo de cada checkpoint. Os ZIPs mel16/mel32 Kaldi da dupla não foram usados nesta etapa.
 
-O [relatório dos quatro cenários](results/transfer_learning_all_scenarios_report.md) e o [resumo JSON](results/transfer_learning_all_scenarios_summary.json) reúnem acurácia, F1, precisão e recall macro, tempos, integridade e links para as métricas por classe. O [notebook de consulta](notebooks/transfer_learning_all_scenarios.ipynb) apresenta as oito combinações modelo/cenário sem iniciar novo treinamento; `RUN_ADDITIONAL_TRANSFER=False` é o padrão. O [relatório original Mono Discrete](results/transfer_learning_consolidated_report.md) e os notebooks [PaSST](notebooks/train_passt.ipynb), [HTS-AT](notebooks/train_htsat.ipynb) e [consolidação Mono Discrete](notebooks/consolidate_transfer_learning.ipynb) foram preservados.
+O [relatório dos quatro cenários](results/passt_htsat_transfer/transfer_learning_all_scenarios_report.md) e o [resumo JSON](results/passt_htsat_transfer/transfer_learning_all_scenarios_summary.json) reúnem acurácia, F1, precisão e recall macro, tempos, integridade e links para as métricas por classe. O [notebook de consulta](notebooks/transfer_learning_all_scenarios.ipynb) apresenta as oito combinações modelo/cenário sem iniciar novo treinamento; `RUN_ADDITIONAL_TRANSFER=False` é o padrão. O [relatório original Mono Discrete](results/passt_htsat_transfer/transfer_learning_consolidated_report.md) e os notebooks [PaSST](notebooks/train_passt.ipynb), [HTS-AT](notebooks/train_htsat.ipynb) e [consolidação Mono Discrete](notebooks/consolidate_transfer_learning.ipynb) foram preservados.
 
 O protocolo usa oito configurações por modelo, confirmação das duas finalistas por validação e cinco seeds novas para a avaliação final: 34 treinamentos de cabeça por cenário, **102 novos nos três cenários adicionais**. Scaler e pesos de classe são calculados somente no treino. AdamW, limite de 200 épocas e parada antecipada por F1 macro de validação; configurações em [configs/linear_probe/](configs/linear_probe/). Os desvios medem variação entre seeds na mesma divisão por fonte. Mono Discrete teve o teste consultado na rodada preliminar; os outros três não tiveram rodada preliminar neste protocolo. Não houve fine-tuning.
 
@@ -204,3 +204,31 @@ Em uma cópia nova, prepare Python 3.11, 7-Zip e o ambiente CUDA usado pelo proj
 O executor prepara Mono Continuous, Poly Discrete e Poly Continuous em sequência, valida MD5/CRC dos dados e SHA-256 dos WAVs/caches, preserva as partições por fonte e salva os resultados. Ele reutiliza cenários concluídos. Os volumes novos de download ficam na área temporária e são descartados após extração verificada; arquivos previamente existentes são preservados. A preparação confere espaço disponível e mantém reserva de 12 GiB. Os três cenários novos restauram as 13 classes usadas, sem WAVs MT2/NoFX nem features baseline.
 
 Para inferência, use `src.models.consolidated_probe.load_consolidated_probe`, carregando obrigatoriamente a cabeça e seu scaler. Código, protocolos, notebooks e resumos são versionados; áudios, embeddings, pesos, predições individuais e documentação de contexto permanecem locais.
+
+## 14. Transfer learning sem TS9
+
+Uma ablação adicional repete PaSST e HTS-AT nos quatro cenários com **12 classes**, retirando somente TS9 de treino, validação e teste. Os WAVs restantes conservam exatamente as partições por fonte do experimento original. Os oito caches de embeddings são reutilizados após validação; cada cabeça de 768 → 12 (9.228 parâmetros) é inicializada e treinada novamente, sem modificar o encoder.
+
+O orçamento de busca e as cinco seeds finais são os mesmos do protocolo com 13 classes. Scalers/pesos de classes são ajustados somente no treino restante, e a configuração é selecionada novamente por F1 macro de validação. O [relatório sem TS9](results/passt_htsat_transfer/transfer_learning_no_ts9_report.md) e o [resumo JSON](results/passt_htsat_transfer/transfer_learning_no_ts9_summary.json) incluem os resultados finais, comparação com 13 classes e avaliação das cabeças antigas nos mesmos WAVs de teste das 12 classes restantes. Previsões TS9 das cabeças antigas continuam contando como erro.
+
+Média ± DP nas cinco seeds finais, em porcentagem. Execução concluída em 02/10/2026; verificações finais em 03/10/2026.
+
+| Cenário | PaSST acurácia | PaSST F1 macro | HTS-AT acurácia | HTS-AT F1 macro |
+| --- | ---: | ---: | ---: | ---: |
+| Mono Discrete | 91,11 ± 0,37 | 88,39 ± 0,28 | 95,32 ± 0,08 | 93,88 ± 0,09 |
+| Mono Continuous | 90,67 ± 0,08 | 90,53 ± 0,07 | 94,96 ± 0,07 | 94,91 ± 0,07 |
+| Poly Discrete | 93,10 ± 0,35 | 90,31 ± 0,32 | 97,73 ± 0,15 | 96,45 ± 0,23 |
+| Poly Continuous | 92,47 ± 0,10 | 92,37 ± 0,08 | 97,69 ± 0,10 | 97,69 ± 0,10 |
+
+O [notebook de consulta](notebooks/transfer_learning_no_ts9.ipynb) mantém `RUN_ABLATION=False`. A ablação é exploratória, motivada por resultados já consultados; remover uma classe altera o problema e não demonstra melhoria na tarefa original com 13 classes. Os resultados originais são preservados como referência principal.
+
+```powershell
+# Exibe o plano sem treinar
+& .\.venv-transfer\Scripts\python.exe scripts/run_transfer_no_ts9.py
+# Executa a ablação; requer os manifests e os oito caches originais
+& .\.venv-transfer\Scripts\python.exe scripts/run_transfer_no_ts9.py --run
+# Recarrega cabeças antigas e gera a comparação, sem treinamento
+& .\.venv-transfer\Scripts\python.exe scripts/report_transfer_no_ts9.py
+```
+
+Cabeças, scalers, predições e gráficos ficam localmente em `results/transfer_learning/ablations/no_ts9/`. Para inferência, carregar a cabeça junto ao scaler e consultar `probe.classes` para interpretar a ordem das saídas. Nenhum áudio TS9 é apagado.

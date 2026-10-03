@@ -17,6 +17,7 @@ class ConsolidatedProbe(nn.Module):
         self.register_buffer('mean',mean)
         self.register_buffer('scale',scale)
         self.bfloat16_encoder = bfloat16_encoder
+        self.classes = tuple(EFFECTS)
 
     def train(self, mode=True):
         super().train(mode)
@@ -49,9 +50,14 @@ def load_consolidated_probe(run_folder, device='cuda'):
             or not bool(torch.isfinite(prep['mean']).all())
             or not bool(torch.isfinite(prep['scale']).all()) or not bool((prep['scale']>0).all())):
         raise ValueError('Invalid training-fitted scaler')
-    head = nn.Linear(768,len(EFFECTS))
+    classes = tuple(record.get('classes', EFFECTS))
+    if len(classes) < 2 or classes != tuple(effect for effect in EFFECTS if effect in classes):
+        raise ValueError('Invalid saved classifier class mapping')
+    head = nn.Linear(768,len(classes))
     head.load_state_dict(torch.load(folder/'best_head.pt',map_location='cpu',weights_only=True),strict=True)
     if not all(bool(torch.isfinite(p).all()) for p in head.parameters()):
         raise ValueError('Invalid classifier weights')
-    return ConsolidatedProbe(load_frozen_encoder(record['model']),head,prep['mean'],prep['scale'],
+    probe = ConsolidatedProbe(load_frozen_encoder(record['model']),head,prep['mean'],prep['scale'],
                              bfloat16_encoder=record['cache_identity']['encoder_precision']=='bfloat16').to(device).eval()
+    probe.classes = classes
+    return probe

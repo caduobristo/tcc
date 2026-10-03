@@ -4,6 +4,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from datetime import datetime, timezone
 import itertools
+import hashlib
 import json
 from pathlib import Path
 import time
@@ -33,6 +34,7 @@ def utc_now():
 
 
 def validate_plan(plan):
+    classes_for_plan(plan)
     if (plan['schema'] != 1 or plan['scenario'] not in SCENARIOS or plan['split_seed'] != 42
             or plan['train_encoder'] or plan['test_used_for_selection']
             or plan['primary_metric'] != 'validation_macro_f1'):
@@ -56,8 +58,57 @@ def validate_plan(plan):
         raise ValueError('Invalid learning-rate schedule')
 
 
-def metrics_from_cm(cm):
+def classes_for_plan(plan):
+    excluded = plan.get('excluded_effects', [])
+    if (not isinstance(excluded, list) or len(set(excluded)) != len(excluded)
+            or set(excluded) - set(EFFECTS)):
+        raise ValueError('Invalid excluded effects')
+    classes = tuple(effect for effect in EFFECTS if effect not in excluded)
+    if len(classes) < 2:
+        raise ValueError('At least two classes must remain')
+    return classes
+
+
+def experiment_suffix(plan):
+    excluded = [effect for effect in EFFECTS if effect not in classes_for_plan(plan)]
+    return 'no_' + '_'.join(excluded).lower() if excluded else ''
+
+
+def dataset_view(rows, classes):
+    """Filter classes without assigning any recording to a new partition."""
+    classes = tuple(classes)
+    if not classes or classes != tuple(effect for effect in EFFECTS if effect in classes):
+        raise ValueError('Class order must preserve the original manifest mapping')
+    groups = {}
+    retained = []
+    for index, row in enumerate(rows):
+        if (row['effect'] not in EFFECTS or int(row['label']) != EFFECTS.index(row['effect'])
+                or row['split'] not in ('train', 'validation', 'test')):
+            raise ValueError('Invalid original manifest mapping or partition')
+        previous = groups.setdefault(row['source_group'], row['split'])
+        if previous != row['split']:
+            raise ValueError('Source recording leaks across partitions')
+        if row['effect'] in classes:
+            retained.append(index)
+    counts, group_counts = {}, {}
+    for split in ('train', 'validation', 'test'):
+        selected = [rows[i] for i in retained if rows[i]['split'] == split]
+        if {row['effect'] for row in selected} != set(classes):
+            raise ValueError(f'Retained {split} partition lacks a class')
+        counts[split] = len(selected)
+        group_counts[split] = len({row['source_group'] for row in selected})
+    metadata = {'classes': list(classes), 'excluded_effects': [e for e in EFFECTS if e not in classes],
+                'original_samples': len(rows), 'samples': len(retained), 'excluded_samples': len(rows)-len(retained),
+                'split_counts': counts, 'group_counts': group_counts, 'source_groups': sum(group_counts.values()),
+                'retained_indices_sha256': hashlib.sha256(np.asarray(retained, dtype='<i8').tobytes()).hexdigest(),
+                'partition_policy': 'retain the original source-group partition of every remaining WAV'}
+    return retained, metadata
+
+
+def metrics_from_cm(cm, classes=EFFECTS):
     cm = np.asarray(cm, dtype=np.int64)
+    if cm.shape != (len(classes), len(classes)) or (cm < 0).any() or not cm.sum():
+        raise ValueError('Invalid confusion matrix or class mapping')
     diagonal = np.diag(cm).astype(float)
     precision = np.divide(diagonal, cm.sum(0), out=np.zeros_like(diagonal), where=cm.sum(0)!=0)
     recall = np.divide(diagonal, cm.sum(1), out=np.zeros_like(diagonal), where=cm.sum(1)!=0)
@@ -66,7 +117,7 @@ def metrics_from_cm(cm):
             'macro_precision':float(precision.mean()), 'macro_recall':float(recall.mean()),
             'confusion_matrix':cm.tolist(),
             'per_class':{name:{'precision':float(precision[i]),'recall':float(recall[i]),
-                               'f1':float(f1[i]),'support':int(cm[i].sum())} for i,name in enumerate(EFFECTS)}}
+                               'f1':float(f1[i]),'support':int(cm[i].sum())} for i,name in enumerate(classes)}}
 
 
 def fit_preprocessing(train_x, normalization):
@@ -96,6 +147,8 @@ class SelectionData:
     validation_y: torch.Tensor
     cache: dict
     model: str
+    classes: tuple = tuple(EFFECTS)
+    view: dict | None = None
 
 
 def load_selection_data(model, plan):
@@ -110,20 +163,15 @@ def load_selection_data(model, plan):
     _, vectors, _ = paths_for(config)
     array = np.load(vectors, mmap_mode='r', allow_pickle=False)
     rows = read_manifest(scenario)
-    group_splits = {}
-    for row in rows:
-        if int(row['label']) != EFFECTS.index(row['effect']) or row['split'] not in ('train','validation','test'):
-            raise ValueError('Invalid manifest class mapping or partition')
-        prior = group_splits.setdefault(row['source_group'],row['split'])
-        if prior != row['split']:
-            raise ValueError('Source recording leaks across partitions')
+    classes = classes_for_plan(plan)
+    retained, view = dataset_view(rows, classes)
     device = device_for(config)
     data = {}
     for split in ('train','validation'):
-        indices = [i for i,row in enumerate(rows) if row['split']==split]
+        indices = [i for i in retained if rows[i]['split']==split]
         data[split+'_x'] = torch.from_numpy(array[indices].copy()).to(device)
-        data[split+'_y'] = torch.tensor([int(rows[i]['label']) for i in indices], device=device)
-    return SelectionData(**data,cache=cache,model=model)
+        data[split+'_y'] = torch.tensor([classes.index(rows[i]['effect']) for i in indices], device=device)
+    return SelectionData(**data,cache=cache,model=model,classes=classes,view=view)
 
 
 def candidate_grid(plan):
@@ -135,7 +183,7 @@ def candidate_id(candidate):
     return f'{candidate["normalization"]}_{candidate["class_weighting"]}_b{candidate["batch_size"]}'
 
 
-def evaluate(head, x, y, batch_size=2048):
+def evaluate(head, x, y, batch_size=2048, *, classes=EFFECTS):
     head.eval()
     predicted = []
     loss_sum = torch.zeros((),device=x.device)
@@ -146,7 +194,7 @@ def evaluate(head, x, y, batch_size=2048):
             loss_sum += nn.functional.cross_entropy(logits,y[start:start+batch_size],reduction='sum')
     prediction = np.concatenate(predicted)
     labels = y.cpu().numpy()
-    metrics = metrics_from_cm(confusion_matrix(labels,prediction,labels=list(range(13))))
+    metrics = metrics_from_cm(confusion_matrix(labels,prediction,labels=list(range(len(classes)))), classes)
     metrics['loss'] = float(loss_sum/len(y))
     return metrics, prediction
 
@@ -156,15 +204,17 @@ def fit_candidate(data, candidate, seed, plan, folder, *, allow_training=False):
         raise RuntimeError('Consolidation training disabled')
     if plan.get('train_encoder') or plan.get('test_used_for_selection'):
         raise ValueError('Only frozen encoders and validation selection are allowed')
+    if tuple(data.classes) != classes_for_plan(plan):
+        raise ValueError('Training classes differ from the protocol')
     folder = Path(folder)
     folder.mkdir(parents=True,exist_ok=False)
     seed_all(seed)
     mean,scale = fit_preprocessing(data.train_x,candidate['normalization'])
     x_train = (data.train_x-mean)/scale
     x_val = (data.validation_x-mean)/scale
-    weights = class_weights(data.train_y,candidate['class_weighting'])
+    weights = class_weights(data.train_y,candidate['class_weighting'], classes=len(data.classes))
     device = x_train.device
-    head = nn.Linear(x_train.shape[1],13).to(device)
+    head = nn.Linear(x_train.shape[1],len(data.classes)).to(device)
     optimizer = torch.optim.AdamW(head.parameters(),lr=plan['learning_rate'],weight_decay=plan['weight_decay'],fused=device.type=='cuda')
     scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer,mode='max',factor=plan['scheduler_factor'],
                   patience=plan['scheduler_patience'],threshold=plan['min_delta'],threshold_mode='abs',min_lr=plan['min_learning_rate'])
@@ -175,7 +225,7 @@ def fit_candidate(data, candidate, seed, plan, folder, *, allow_training=False):
     record = {'model':data.model,'candidate':candidate,'training_seed':seed,'split_seed':plan['split_seed'],
               'status':'running','started_at_utc':utc_now(),'encoder_frozen':True,'test_evaluated':False,
               'trainable_parameters':sum(p.numel() for p in head.parameters()),'cache_identity':data.cache['identity'],
-              'embedding_sha256':data.cache['sha256']}
+              'embedding_sha256':data.cache['sha256'], 'classes':list(data.classes), 'dataset_view':data.view}
     write_json(folder/'run.json',record)
     torch.save({'mean':mean.cpu(),'scale':scale.cpu(),'class_weights':weights.cpu()},folder/'preprocessing.pt')
     for epoch in range(1,plan['max_epochs']+1):
@@ -198,7 +248,7 @@ def fit_candidate(data, candidate, seed, plan, folder, *, allow_training=False):
             denominator += weight_sum
             correct += (logits.detach().argmax(1)==labels).sum()
             updates += 1
-        validation,_ = evaluate(head,x_val,data.validation_y)
+        validation,_ = evaluate(head,x_val,data.validation_y, classes=data.classes)
         score = validation['macro_f1']
         lr = optimizer.param_groups[0]['lr']
         scheduler.step(score)
@@ -256,19 +306,25 @@ def evaluate_final_run(folder, model, lock, cache):
     _,path,_ = paths_for(config)
     array = np.load(path,mmap_mode='r',allow_pickle=False)
     rows = read_manifest(scenario)
-    indices = [i for i,row in enumerate(rows) if row['split']=='test']
+    classes = tuple(record.get('classes', EFFECTS))
+    if list(classes) != list(lock.get('classes', EFFECTS)):
+        raise ValueError('Final evaluation class mapping differs from selection lock')
+    retained, view = dataset_view(rows, classes)
+    if record.get('dataset_view') is not None and record['dataset_view'] != view:
+        raise ValueError('Final evaluation dataset differs from training')
+    indices = [i for i in retained if rows[i]['split']=='test']
     x = torch.from_numpy(array[indices].copy()).to(device)
-    y = torch.tensor([int(rows[i]['label']) for i in indices],device=device)
+    y = torch.tensor([classes.index(rows[i]['effect']) for i in indices],device=device)
     prep = torch.load(folder/'preprocessing.pt',map_location=device,weights_only=True)
-    head = nn.Linear(768,13).to(device).eval()
+    head = nn.Linear(768,len(classes)).to(device).eval()
     head.load_state_dict(torch.load(folder/'best_head.pt',map_location=device,weights_only=True),strict=True)
     if (not all(bool(torch.isfinite(p).all()) for p in head.parameters())
             or not bool(torch.isfinite(prep['mean']).all()) or not bool(torch.isfinite(prep['scale']).all())
             or not bool((prep['scale']>0).all())):
         raise ValueError('Final head contains nonfinite parameters')
-    metrics,predicted = evaluate(head,(x-prep['mean'])/prep['scale'],y)
+    metrics,predicted = evaluate(head,(x-prep['mean'])/prep['scale'],y, classes=classes)
     true = y.cpu().numpy()
-    metrics['classification_report'] = classification_report(true,predicted,labels=list(range(13)),target_names=EFFECTS,output_dict=True,zero_division=0)
+    metrics['classification_report'] = classification_report(true,predicted,labels=list(range(len(classes))),target_names=classes,output_dict=True,zero_division=0)
     if int(np.asarray(metrics['confusion_matrix']).sum()) != len(indices):
         raise ValueError('Test coverage mismatch')
     write_json(folder/'test_metrics.json',metrics)
@@ -286,9 +342,15 @@ def run_consolidation(plan_path, *, allow_training=False, on_session_started=Non
     validate_plan(plan)
     started = time.perf_counter()
     scenario = plan['scenario']
-    session = PROJECT_ROOT/'results/transfer_learning'/scenario/('consolidation_'+datetime.now().strftime('%Y%m%d_%H%M%S')+'_'+uuid.uuid4().hex[:6])
+    suffix = experiment_suffix(plan)
+    root = PROJECT_ROOT/'results/transfer_learning'
+    if suffix:
+        root = root/'ablations'/suffix
+    session = root/scenario/('consolidation_'+datetime.now().strftime('%Y%m%d_%H%M%S')+'_'+uuid.uuid4().hex[:6])
     session.mkdir(parents=True,exist_ok=False)
+    _, view = dataset_view(read_manifest(scenario), classes_for_plan(plan))
     snapshot = {'protocol':plan,'protocol_sha256':sha256(plan_path),'implementation_sha256':sha256(Path(__file__)),
+                'dataset_view':view,
                 'manifest_sha256':sha256(manifest_path(scenario)),'started_at_utc':utc_now(),
                 'hardware':{'gpu':torch.cuda.get_device_name() if torch.cuda.is_available() else None,
                             'torch':torch.__version__,'device':'cuda' if torch.cuda.is_available() else 'cpu'},
@@ -322,6 +384,7 @@ def run_consolidation(plan_path, *, allow_training=False, on_session_started=Non
         selection[model] = ranked[0]
         del data
     lock = {'locked_at_utc':utc_now(),'selected':selection,'final_seeds':plan['final_seeds'],
+            'classes':list(classes_for_plan(plan)), 'dataset_view':view,
             'criterion':'highest mean validation macro F1 across selection seeds; ties by candidate ID',
             'test_used_for_selection':False,'protocol_sha256':snapshot['protocol_sha256']}
     write_json(session/'selection_locked.json',lock)
@@ -351,6 +414,7 @@ def run_consolidation(plan_path, *, allow_training=False, on_session_started=Non
             record['test_evaluated'] = True
             print('FINAL_TEST',model,record['training_seed'],metrics['accuracy'],metrics['macro_f1'],flush=True)
     summary = {'session':session.relative_to(PROJECT_ROOT).as_posix(),'protocol':plan,'selection':selection,
+               'dataset_view':view,
                'final_runs':final_records,'selection_lock_sha256':lock['sha256'],'completed_at_utc':utc_now(),
                'elapsed_seconds':time.perf_counter()-started}
     for model,records in final_records.items():
