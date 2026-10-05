@@ -240,12 +240,10 @@ def report(session):
     write_json(public_results/public_summary_name,public)
     content = '\n'.join(lines)+'\n'
     (public_results/public_report_name).write_text(content,encoding='utf-8')
-    relative_root = Path(os.path.relpath(ROOT, session)).as_posix()
-    relative_results = Path(os.path.relpath(public_results, session)).as_posix()
-    local_content = content.replace('../../docs/',relative_root+'/docs/').replace('../../configs/',relative_root+'/configs/')
-    local_content = local_content.replace(f']({public_summary_name})',f']({relative_results}/{public_summary_name})')
+    local_content = content.replace('../../docs/','../../../../docs/').replace('../../configs/','../../../../configs/')
+    local_content = local_content.replace(f']({public_summary_name})',f'](../../../{public_summary_name})')
     if suffix:
-        local_content = local_content.replace(f']({original_stem}_report.md)',f']({relative_results}/{original_stem}_report.md)')
+        local_content = local_content.replace(f']({original_stem}_report.md)',f'](../../../{original_stem}_report.md)')
     (session/'report.md').write_text(local_content,encoding='utf-8')
     print('REPORT_COMPLETE',session,'Verified heads:',len(verified))
     return public
