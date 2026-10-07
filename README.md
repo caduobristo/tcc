@@ -124,10 +124,10 @@ A tabela abaixo resume o **F1 macro** obtido pelos modelos nesta primeira aborda
 
 | Dataset | PaSST | AST | AudioMAE | HTS-AT |
 | :--- | ---: | ---: | ---: | ---: |
-| Mono Discrete | 82,13% | 87,77% | 77,32% | 90,49% |
-| Mono Continuous | 83,95% | 89,21% | 80,76% | 91,59% |
-| Poly Discrete | 83,39% | 91,38% | 76,92% | 92,57% |
-| Poly Continuous | 84,83% | 92,16% | 81,83% | 93,89% |
+| Mono Discrete | 82,22% | 83,81% | 73,37% | 90,49% |
+| Mono Continuous | 83,95% | 87,03% | 77,13% | 91,59% |
+| Poly Discrete | 83,24% | 87,94% | 70,70% | 92,57% |
+| Poly Continuous | 84,84% | 90,31% | 77,10% | 93,89% |
 
 Nesta etapa, observou-se que modelos como o AudioMAE apresentaram maiores dificuldades com as resoluções temporais padrão dos datasets em comparação ao HTS-AT, sugerindo a eficácia do tratamento temporal dos dados.
 
@@ -139,7 +139,7 @@ Os achados exploratórios desse experimento (debatidos na [Issue #6](https://git
 
 - **O alongamento melhorou o desempenho dos três modelos testados:** Ocorreu ganho de acurácia e F1 macro médios nos 12 pares de modelo/dataset avaliados (o HTS-AT não foi submetido a esta mudança pois a técnica já é o seu padrão).
 - **AST consolidou os melhores resultados:** Apresentou o maior F1 macro entre os três modelos adaptados em todos os cenários testados.
-- **AudioMAE teve o salto mais expressivo:** O modelo se beneficiou drasticamente da interpolação temporal, chegando a um ganho de +13,75 pontos percentuais em Poly Discrete.
+- **AudioMAE teve o salto mais expressivo:** O modelo se beneficiou drasticamente da interpolação temporal. Em Poly Discrete, passou de 70,70% (na abordagem inicial) para 90,67% (um ganho de quase 20 pontos percentuais).
 
 **F1 macro final** obtido pelas variantes com alongamento temporal (média de 5 inicializações):
 
