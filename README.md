@@ -1,6 +1,6 @@
 # Transformers de áudio para classificação de efeitos de guitarra
 
-ICSXG0-S71 TCC | Semestre 1 de 2026
+CSX43-S71 TCC | Semestre 2 de 2026
 
 Trabalho de Conclusão de Curso (TCC) em andamento para o curso de graduação em Engenharia da Computação na Universidade Tecnologia Federal do Paraná - UTFPR - Campus Curitiba.
 
@@ -10,7 +10,6 @@ Orientador: Gustavo Benvenutti Borba
 
 <img width="1774" height="887" alt="image" src="https://github.com/user-attachments/assets/a262350d-b957-4065-a927-9e0d3f97e732" />
 
----
 
 ## 1. Introdução e Visão Geral
 
@@ -20,7 +19,6 @@ O projeto parte da constatação de que efeitos como *overdrive*, *distortion* e
 
 Diante desse contexto, o objetivo do trabalho é investigar diferentes abordagens para o problema, com foco na análise comparativa entre representações de áudio e arquiteturas de redes neurais ao longo do desenvolvimento do TCC.
 
----
 
 ## 2. Objetivos
 
@@ -36,8 +34,6 @@ Desenvolver um pipeline computacional capaz de classificar efeitos de guitarra a
 - Explorar cenários mais realistas, como sinais contendo múltiplos instrumentos
 - Investigar relações de similaridade tímbrica aprendidas pelos modelos
 
----
-
 ## 3. Abordagem Inicial: Redes Convolucionais
 
 A abordagem inicial adotada neste projeto segue a linha tradicional da literatura em classificação de áudio, baseada no uso de Redes Neurais Convolucionais (CNNs).
@@ -52,8 +48,6 @@ Embora eficaz, essa abordagem apresenta limitações relevantes:
 
 Essas limitações motivaram a investigação de arquiteturas mais recentes e expressivas.
 
----
-
 ## 4. Evolução da Abordagem: Transformers para Áudio
 
 A partir da revisão bibliográfica, o projeto evoluiu para a incorporação de modelos baseados em Transformers, que vêm apresentando resultados melhores em tarefas de processamento de áudio.
@@ -61,8 +55,6 @@ A partir da revisão bibliográfica, o projeto evoluiu para a incorporação de 
 A principal mudança conceitual consiste na forma de representação do sinal: o espectrograma deixa de ser tratado exclusivamente como uma imagem e passa a ser interpretado como uma sequência de unidades (patches), possibilitando a aplicação de mecanismos de self-attention.
 
 Essa abordagem permite uma modelagem mais eficiente de relações globais no sinal, superando limitações inerentes às CNNs.
-
----
 
 ## 5. Aplicação de Transformers em Áudio
 
@@ -79,8 +71,6 @@ Esse processo possibilita:
 
 - Captura de dependências globais nos domínios de tempo e frequência
 - Modelagem de interações complexas entre diferentes regiões do espectrograma
-
----
 
 ## 6. Arquiteturas Investigadas
 
@@ -106,80 +96,69 @@ Durante o desenvolvimento do projeto, diferentes variações de Transformers apl
 - Reconstrução de patches mascarados do espectrograma  
 - Redução da dependência de dados rotulados  
 
----
 ## 7. Documentação dos Datasets
 
-Os datasets utilizados neste trabalho são documentados seguindo o framework [Datasheets for Datasets](https://arxiv.org/abs/1803.09010), proposto por Gebru et al., com adaptações para o domínio de áudio musical e efeitos de guitarra.
-
-Os datasheets completos estão disponíveis na issue dedicada: [Datasheets for Datasets](https://github.com/caduobristo/tcc/issues/2)
+Os datasets utilizados neste trabalho são documentados seguindo o framework [Datasheets for Datasets](https://arxiv.org/abs/1803.09010), proposto por Gebru et al., com adaptações para o domínio de áudio musical e efeitos de guitarra. Os datasheets completos estão disponíveis na [Issue #2](https://github.com/caduobristo/tcc/issues/2).
 
 ### Datasets analisados
 
-* **IDMT-SMT-GUITAR:**
-  Dataset de guitarra limpa com múltiplas técnicas performáticas e estruturas musicais, utilizado como base para geração sintética de novos dados.
+* **IDMT-SMT-GUITAR:** Guitarra limpa com múltiplas técnicas performáticas, utilizado como base para geração sintética de novos dados.
+* **IDMT-SMT-AUDIO-EFFECTS:** Gravações processadas organizadas por categorias de efeitos.
+* **GEC-GIM:** Sinais mistos contendo múltiplos instrumentos para classificação de efeitos.
+* **GEPE-GIM:** Sinais mistos voltados à estimação contínua de parâmetros de efeitos em mixagens.
 
-* **IDMT-SMT-AUDIO-EFFECTS:**
-  Dataset organizado por categorias de efeitos de áudio, contendo gravações processadas e metadados estruturados via XML.
+## 8. Reprodução da Baseline e Experimentos Iniciais
 
-* **GEC-GIM:**
-  Dataset para classificação de efeitos de guitarra em sinais mistos contendo múltiplos instrumentos.
+As fases iniciais da pesquisa consistiram na validação do ambiente e na definição de uma linha de base sólida, replicando trabalhos consolidados da literatura. Esses experimentos e testes exploratórios estão organizados em [experiments/](experiments/README.md):
 
-* **GEPE-GIM:**
-  Dataset voltado à estimação contínua de parâmetros de efeitos de guitarra em mixagens instrumentais.
+- **FxNet e redes de convolução:** Um snapshot do código de Comunità et al. com adaptações locais, servindo de fundação metodológica ([detalhes](experiments/fxnet_reproduction/README.md)).
+- **Modelos Pré-treinados:** Validações iniciais do modelo AudioMAE (inferência AudioSet e exploração de embeddings) e do modelo PaSST (extração e análise exploratória de embeddings).
 
----
+A baseline consolidada, cujo [notebook de treinamento](notebooks/train_baseline.ipynb) e [relatório de resultados](results/baseline/baseline_results_report.md) guiam o projeto, estabelece a referência de desempenho das CNNs tradicionais, sobre a qual as arquiteturas Transformer são comparadas.
 
-## 8. Estado Atual do Projeto
+## 9. Resultados de Transfer Learning (Linear Probing)
 
-Até o momento, o projeto encontra-se nas seguintes etapas:
+Após o estabelecimento da baseline, a investigação avançou para a aplicação de *Transfer Learning* extraindo os embeddings gerados pelos *encoders* congelados dos modelos PaSST, AST, AudioMAE e HTS-AT (cujos detalhes técnicos estão documentados na [Issue #5](https://github.com/caduobristo/tcc/issues/5)). O treinamento se restringiu a uma cabeça linear (*Linear Probing*) para realizar a classificação sobre as 13 classes de efeitos de guitarra.
 
-- Revisão bibliográfica consolidada, com foco em arquiteturas modernas para classificação de áudio baseadas em CNNs e Transformers  
-- Estudo detalhado de modelos como AST, PaSST, HTS-AT e AudioMAE, incluindo suas estratégias de treinamento e representação  
-- Definição do pipeline experimental, contemplando pré-processamento, modelagem e avaliação  
-- Reprodução de experimentos da literatura, validando resultados reportados e consolidando o ambiente experimental  
-- Implementação de transfer learning com PaSST e HTS-AT congelados e treinamento de cabeças lineares para as 13 classes de efeitos; protocolos e resultados na seção 13
+A tabela abaixo resume o **F1 macro** obtido pelos modelos nesta primeira abordagem (antes da adaptação temporal nos modelos que não a possuem nativamente). O HTS-AT obteve os melhores resultados de forma consistente, o que serviu de grande indício, pois sua arquitetura já realiza uma interpolação temporal de forma nativa:
 
-Como próximos passos, destacam-se:
+| Dataset | PaSST | AST | AudioMAE | HTS-AT |
+| :--- | ---: | ---: | ---: | ---: |
+| Mono Discrete | 82,13% | 87,77% | 77,32% | 90,49% |
+| Mono Continuous | 83,95% | 89,21% | 80,76% | 91,59% |
+| Poly Discrete | 83,39% | 91,38% | 76,92% | 92,57% |
+| Poly Continuous | 84,83% | 92,16% | 81,83% | 93,89% |
 
-- Realização de **fine-tuning parcial ou total** dos modelos, visando adaptação mais profunda ao domínio do problema  
-- Investigação da viabilidade de **treinamento de modelos baseados em Transformers do zero**, considerando disponibilidade de dados e custo computacional  
-- Expansão e organização do dataset, incluindo possíveis estratégias de geração de dados sintéticos  
+Nesta etapa, observou-se que modelos como o AudioMAE apresentaram maiores dificuldades com as resoluções temporais padrão dos datasets em comparação ao HTS-AT, sugerindo a eficácia do tratamento temporal dos dados.
 
----
+## 10. Impacto da Adaptação Temporal
 
-## 9. Resultados Preliminares
+A partir dos resultados e descobertas do *Linear Probing* do HTS-AT, elaborou-se a hipótese de que a compatibilização do tamanho do espectrograma (alongamento temporal por interpolação bicúbica, inspirada no próprio HTS-AT) aos outros modelos pré-treinados poderia aprimorar a extração das features.
 
-Foram realizados testes preliminares com arquiteturas baseadas em Transformers para áudio, com foco nos modelos PaSST (Patchout Spectrogram Transformer) e AudioMAE (Masked Autoencoders for Audio).
+Os achados exploratórios desse experimento (debatidos na [Issue #6](https://github.com/caduobristo/tcc/issues/6)) validaram a hipótese com ganhos expressivos:
 
-Os experimentos conduzidos até o momento, incluindo configurações utilizadas, etapas de reprodução e resultados obtidos, foram documentados em uma issue separada do repositório: https://github.com/caduobristo/tcc/issues/1
+- **O alongamento melhorou o desempenho dos três modelos testados:** Ocorreu ganho de acurácia e F1 macro médios nos 12 pares de modelo/dataset avaliados (o HTS-AT não foi submetido a esta mudança pois a técnica já é o seu padrão).
+- **AST consolidou os melhores resultados:** Apresentou o maior F1 macro entre os três modelos adaptados em todos os cenários testados.
+- **AudioMAE teve o salto mais expressivo:** O modelo se beneficiou drasticamente da interpolação temporal, chegando a um ganho de +13,75 pontos percentuais em Poly Discrete.
 
-Esses testes têm como objetivo avaliar a viabilidade das arquiteturas investigadas para tarefas de classificação de efeitos de guitarra e servir como base para os próximos experimentos de fine-tuning e adaptação ao domínio do projeto.
+**F1 macro final** obtido pelas variantes com alongamento temporal (média de 5 inicializações):
 
----
+| Dataset | PaSST | AST | AudioMAE |
+| :--- | ---: | ---: | ---: |
+| Mono Discrete | 84,86% | 90,74% | 87,55% |
+| Mono Continuous | 85,34% | 91,78% | 88,88% |
+| Poly Discrete | 86,19% | 92,89% | 90,67% |
+| Poly Continuous | 87,38% | 93,40% | 92,00% |
 
-## 10. Contribuições Esperadas
+Apesar da eficácia do pós-processamento temporal para aproximar o desempenho das arquiteturas, certas classes de efeitos contíguos (ex: distinção entre os pedais de overdrive TS9 e 808) continuaram apresentando erros sistemáticos.
 
-Espera-se que o projeto resulte em:
+## 11. Conclusões e Próximos Passos
 
-- Um pipeline reprodutível para classificação de efeitos de guitarra
-- Análise do impacto de diferentes representações de áudio no desempenho dos modelos
-- Comparação entre abordagens baseadas em CNNs e Transformers
-- Geração de insights sobre modelagem computacional de timbre musical
+Os experimentos realizados até agora viabilizaram a construção de um pipeline reprodutível para classificação de efeitos e revelaram o potencial das arquiteturas de atenção sobre as convolucionais tradicionais. A descoberta do impacto da interpolação temporal foi um marco, demonstrando que a forma como o sinal acústico é mapeado para a resolução nativa do *encoder* pode ser tão decisiva quanto a escolha da arquitetura.
 
----
+Com base nos sucessos e gargalos mapeados (como os limites do *Linear Probing* para desambiguação de pedais similares com *encoders* congelados), as próximas etapas da pesquisa envolvem:
 
-## 11. Experimentos de reprodução
+- **Investigação da adaptação temporal:** Analisar e documentar mais a fundo as razões pelas quais o alongamento do espectrograma gera ganhos tão expressivos e altera o comportamento interno das camadas de atenção.
+- **Fine-tuning estratégico:** Realização de *fine-tuning* (parcial ou total) direcionado prioritariamente aos modelos que apresentaram os melhores resultados e maior capacidade de adaptação, otimizando o uso dos recursos computacionais da pesquisa.
+- **Desambiguação de classes:** Estruturação de técnicas adicionais e ampliação do dataset sintético para contornar desbalanceamentos e as confusões persistentes entre pedais de características muito próximas (como TS9 e 808).
 
-As tentativas de reprodução e explorações iniciais estão organizadas em [experiments/](experiments/README.md):
-
-- [FxNet e redes de estimação de parâmetros](experiments/fxnet_reproduction/README.md): snapshot do código de Comunità et al., adaptações locais e registros de execuções concluídas e com falhas.
-- [AudioMAE](experiments/audiomae/README.md): validação do modelo pré-treinado, inferência AudioSet e exploração de embeddings de guitarra.
-- [PaSST](experiments/passt/README.md): extração e análise exploratória de embeddings.
-
-A baseline consolidada possui seu próprio [notebook de treinamento](notebooks/train_baseline.ipynb) e [relatório de resultados](results/baseline/baseline_results_report.md). Ela deve ser distinguida das reproduções históricas acima.
-
-Os experimentos incluem código, documentação, licenças e resultados resumidos. Datasets, ambientes, checkpoints das reproduções e artefatos volumosos devem ser preparados localmente, conforme o README de cada experimento.
-
-## 12. Organização dos dados locais
-
-O [catálogo de dados](data/README.md) define caminhos comuns para arquivos originais, representações processadas, metadados e auditorias. O inventário local `docs/data_inventory.md` cruza os dados disponíveis com o baseline e os experimentos. Os ZIPs mel16/mel32 são variantes processadas distintas das features originais da FxNet; o inventário registra a integridade e as lacunas para repetir cada execução.
