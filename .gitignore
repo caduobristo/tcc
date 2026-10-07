@@ -252,6 +252,11 @@ __marimo__/
 /checkpoints/pretrained_models/
 /checkpoints/best_ast*.pt
 
+# Preparacao/execucao de linear probing: ambientes, pesos e saidas locais
+/.venv-transfer/
+/checkpoints/transfer_learning/
+/results/transfer_learning/
+
 # Pasta docs e contexto para IA permanecem locais; READMEs/relatorios sao versionados
 /docs/
 AGENTS.md

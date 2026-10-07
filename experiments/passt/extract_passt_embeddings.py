@@ -4,7 +4,6 @@ import argparse
 import csv
 import json
 import os
-import sys
 import re
 import warnings
 from pathlib import Path
@@ -22,10 +21,6 @@ import matplotlib.pyplot as plt
 os.environ.setdefault("LOKY_MAX_CPU_COUNT", "1")
 
 from sklearn.manifold import TSNE
-
-PROJECT_ROOT = Path(__file__).resolve().parents[2]
-sys.path.insert(0, str(PROJECT_ROOT))
-from src.data.paths import data_root
 
 
 SAMPLE_RATE = 32000
@@ -632,9 +627,9 @@ def save_interactive_html(
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Extrai embeddings PaSST de data/raw/gec_gim e gera t-SNE."
+        description="Extrai embeddings PaSST hear21passt de audios em dataset/ e gera t-SNE."
     )
-    parser.add_argument("--dataset", type=Path, default=data_root() / "raw" / "gec_gim")
+    parser.add_argument("--dataset", type=Path, default=Path("dataset"))
     parser.add_argument("--input-npz", type=Path, default=None)
     parser.add_argument("--output-npz", type=Path, default=Path("embeddings.npz"))
     parser.add_argument("--output-plot", type=Path, default=Path("embeddings_tsne.png"))

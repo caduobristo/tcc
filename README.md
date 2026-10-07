@@ -137,12 +137,10 @@ Até o momento, o projeto encontra-se nas seguintes etapas:
 - Estudo detalhado de modelos como AST, PaSST, HTS-AT e AudioMAE, incluindo suas estratégias de treinamento e representação  
 - Definição do pipeline experimental, contemplando pré-processamento, modelagem e avaliação  
 - Reprodução de experimentos da literatura, validando resultados reportados e consolidando o ambiente experimental  
+- Implementação de transfer learning com PaSST e HTS-AT congelados e treinamento de cabeças lineares para as 13 classes de efeitos; protocolos e resultados na seção 13
 
 Como próximos passos, destacam-se:
 
-- Aplicação de **transfer learning** a partir de modelos pré-treinados (ex: AudioSet), adaptando-os ao domínio específico de efeitos de guitarra  
-- Substituição da camada de classificação original por uma **rede fully connected** ajustada ao novo conjunto de classes (timbres/efeitos), em substituição às categorias genéricas utilizadas nos datasets originais  
-- Treinamento supervisionado dessa nova camada de classificação, mantendo o backbone do Transformer congelado (feature extractor)  
 - Realização de **fine-tuning parcial ou total** dos modelos, visando adaptação mais profunda ao domínio do problema  
 - Investigação da viabilidade de **treinamento de modelos baseados em Transformers do zero**, considerando disponibilidade de dados e custo computacional  
 - Expansão e organização do dataset, incluindo possíveis estratégias de geração de dados sintéticos  
@@ -178,7 +176,7 @@ As tentativas de reprodução e explorações iniciais estão organizadas em [ex
 - [AudioMAE](experiments/audiomae/README.md): validação do modelo pré-treinado, inferência AudioSet e exploração de embeddings de guitarra.
 - [PaSST](experiments/passt/README.md): extração e análise exploratória de embeddings.
 
-A baseline consolidada possui seu próprio [notebook de treinamento](notebooks/train_baseline.ipynb) e [relatório de resultados](results/baseline_results_report.md). Ela deve ser distinguida das reproduções históricas acima.
+A baseline consolidada possui seu próprio [notebook de treinamento](notebooks/train_baseline.ipynb) e [relatório de resultados](results/baseline/baseline_results_report.md). Ela deve ser distinguida das reproduções históricas acima.
 
 Os experimentos incluem código, documentação, licenças e resultados resumidos. Datasets, ambientes, checkpoints das reproduções e artefatos volumosos devem ser preparados localmente, conforme o README de cada experimento.
 
