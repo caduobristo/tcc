@@ -179,3 +179,7 @@ As tentativas de reprodução e explorações iniciais estão organizadas em [ex
 A baseline consolidada possui seu próprio [notebook de treinamento](notebooks/train_baseline.ipynb) e [relatório de resultados](results/baseline/baseline_results_report.md). Ela deve ser distinguida das reproduções históricas acima.
 
 Os experimentos incluem código, documentação, licenças e resultados resumidos. Datasets, ambientes, checkpoints das reproduções e artefatos volumosos devem ser preparados localmente, conforme o README de cada experimento.
+
+## 12. Organização dos dados locais
+
+O [catálogo de dados](data/README.md) define caminhos comuns para arquivos originais, representações processadas, metadados e auditorias. O inventário local `docs/data_inventory.md` cruza os dados disponíveis com o baseline e os experimentos. Os ZIPs mel16/mel32 são variantes processadas distintas das features originais da FxNet; o inventário registra a integridade e as lacunas para repetir cada execução.
