@@ -1,0 +1,5 @@
+# Install in an isolated environment sharing the verified torch/CUDA runtime.
+# Do not downgrade the PaSST/HTS-AT environment.
+timm==0.4.5
+wget==3.2
+safetensors==0.8.0

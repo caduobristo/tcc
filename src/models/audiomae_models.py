@@ -2,7 +2,10 @@ import torch
 import torch.nn as nn
 from functools import partial
 import timm.models.vision_transformer
-from timm.models.layers import PatchEmbed
+try:
+    from timm.models.layers import PatchEmbed
+except ImportError:  # timm 0.4.5 used by the isolated AST/AudioMAE experiment
+    from timm.models.vision_transformer import PatchEmbed
 
 class AudioMAE_VisionTransformer(timm.models.vision_transformer.VisionTransformer):
     """ Vision Transformer with support for global average pooling """

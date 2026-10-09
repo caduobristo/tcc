@@ -254,8 +254,13 @@ __marimo__/
 
 # Preparacao/execucao de linear probing: ambientes, pesos e saidas locais
 /.venv-transfer/
+/.venv-temporal-legacy/
 /checkpoints/transfer_learning/
 /results/transfer_learning/
+
+# Temporal experiment: aggregate JSON is versioned; detailed documentation is in issue 6.
+/results/temporal_interpolation/*
+!/results/temporal_interpolation/summary.json
 
 # Pasta docs e contexto para IA permanecem locais; READMEs/relatorios sao versionados
 /docs/

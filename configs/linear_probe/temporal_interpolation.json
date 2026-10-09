@@ -1,0 +1,46 @@
+{
+  "experiment": "temporal_interpolation_v1",
+  "status": "execution_authorized_20261006",
+  "scenarios": ["mono_disc", "mono_cont", "poly_disc", "poly_cont"],
+  "models": {
+    "ast": {"input": "existing_mel16", "target_frames": 1024, "bands": 128, "control": "pad"},
+    "audiomae": {"input": "existing_mel16", "target_frames": 1024, "bands": 128, "control": "pad"},
+    "passt": {"input": "official_wav_native_frontend", "target_frames": 998, "bands": 128, "control": "native_short"}
+  },
+  "adaptation": {"mode": "bicubic", "align_corners": true, "axis": "time_only", "stage": "after_native_normalization_before_patch_embedding"},
+  "classes": ["808", "BD2", "BMF", "DPL", "DS1", "FFC", "MGS", "OD1", "RAT", "RBM", "SD1", "TS9", "VTB"],
+  "train_encoder": false,
+  "run_extraction": false,
+  "run_training": false,
+  "split_seed": 42,
+  "search_seed": 42,
+  "selection_seeds": [7, 21, 42],
+  "final_seeds": [101, 202, 303, 404, 505],
+  "head_protocol": {
+    "normalization": ["none", "train_standardize"],
+    "class_weighting": ["none", "train_balanced"],
+    "batch_sizes": [128, 1024],
+    "learning_rate": 0.001,
+    "weight_decay": 0.01,
+    "max_epochs": 200,
+    "early_stopping_patience": 15,
+    "min_delta": 0.001,
+    "scheduler_patience": 5,
+    "scheduler_factor": 0.5,
+    "min_learning_rate": 0.00001,
+    "primary_metric": "validation_macro_f1",
+    "finalists_per_model": 2
+  },
+  "output_root": "results/transfer_learning/ablations/temporal_interpolation_v1",
+  "historical_test_already_inspected": true,
+  "reuse_original_embedding_caches": false,
+  "baseline_controls_require_same_head_protocol": true,
+  "execution": {
+    "encoder_precision": "bfloat16",
+    "embedding_batch_sizes": {"passt": 256, "ast": 256, "audiomae": 256},
+    "reuse_validated_passt_controls": false,
+    "legacy_runtime": ".venv-temporal-legacy/Scripts/python.exe",
+    "attention_all_models": "equivalent_pytorch_sdpa",
+    "training_authorization": "User explicitly requested rerunning three models with temporal interpolation"
+  }
+}

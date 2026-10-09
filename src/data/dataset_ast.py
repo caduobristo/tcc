@@ -4,6 +4,7 @@ import torch
 import numpy as np
 from torch.utils.data import Dataset
 import torchvision.transforms as transforms
+from src.data.spectrogram_resize import adapt_spectrogram_time
 
 
 class FxDatasetAST(Dataset):
@@ -23,6 +24,7 @@ class FxDatasetAST(Dataset):
         target_length: int = 1024, # Expected AST input_tdim
         dataset_mean: float = -4.27, # Approx values (AudioSet mean) or compute for GUITAR-FX
         dataset_std: float = 4.57,
+        temporal_adaptation: str = "pad",
     ):
         self.root = os.path.abspath(root)
         self.excl_folders = excl_folders or []
@@ -33,6 +35,9 @@ class FxDatasetAST(Dataset):
         self.target_length = target_length
         self.dataset_mean = dataset_mean
         self.dataset_std = dataset_std
+        if temporal_adaptation not in {"pad", "bicubic"}:
+            raise ValueError("temporal_adaptation must be pad or bicubic")
+        self.temporal_adaptation = temporal_adaptation
 
         self.fx_to_label = {}
         self.label_to_fx = {}
@@ -117,12 +122,11 @@ class FxDatasetAST(Dataset):
             # AST Normalization (mean=0, std=0.5 approx)
             mel_tensor = (mel_tensor - self.dataset_mean) / (self.dataset_std * 2)
             
-            # Pad or truncate to target_length
-            if mel_tensor.shape[0] < self.target_length:
-                pad_len = self.target_length - mel_tensor.shape[0]
-                mel_tensor = torch.nn.functional.pad(mel_tensor, (0, 0, 0, pad_len))
-            elif mel_tensor.shape[0] > self.target_length:
-                mel_tensor = mel_tensor[:self.target_length, :]
+            # Default remains historical padding; the isolated ablation stretches
+            # the real normalized frames, never a tensor already padded with zeros.
+            mel_tensor = adapt_spectrogram_time(
+                mel_tensor, self.target_length, mode=self.temporal_adaptation
+            )
                 
             # AST expects (time_frames, 128), and in forward pass it unsqueezes to add channel dim
         except Exception as e:
